@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nocrastination.Core.Entities;
 using Nocrastination.Data;
+using Nocrastination.Interfaces;
+using Nocrastination.Services;
 using Nocrastination.Settings;
 
 namespace Nocrastination
@@ -42,6 +44,10 @@ namespace Nocrastination
             services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
             //services.AddSingleton(Configuration.GetSection("AppSettings:Store").Get<StoreSettings>());
             services.AddSingleton(Configuration.GetSection("AppSettings").Get<AppSettings>());
+
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
