@@ -10,6 +10,6 @@ namespace Nocrastination.Helpers
     public interface IClaimsHelper
     {
         string GetUserIdFromClaims(IEnumerable<Claim> claims);
-        AppUser GetUserFromClaims(IEnumerable<Claim> claims);
+        Task<AppUser> GetUserFromClaims(IEnumerable<Claim> claims);
     }
 }
