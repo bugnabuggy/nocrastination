@@ -43,11 +43,11 @@ namespace Nocrastination.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterChild([FromBody] RegisterChildDTO child)
         {
-            var user = _helper.GetUserFromClaims(User.Claims);
+            var user = await _helper.GetUserFromClaims(User.Claims);
 
             if (!user.IsChild)
             {
-                return StatusCode(401, "You have no rights to do this.");
+                return StatusCode(403, "You have no rights to do this.");
             }
 
             var result = await _accSrv.Register(child, user.Id);
