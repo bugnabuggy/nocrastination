@@ -67,7 +67,7 @@ namespace Nocrastination.Controllers
                 return StatusCode(403, "You have no rights to do this.");
             }
 
-            var result = await _taskSrv.AddTasks(user.Id, items);
+            var result = _taskSrv.AddTasks(user.Id, items);
 
             if (result.Success)
             {

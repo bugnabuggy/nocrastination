@@ -75,9 +75,9 @@ namespace Nocrastination.Services
             };
         }
 
-        public async Task<OperationResult<Tasks>> AddTasks(string userId, TaskToManipulateDTO[] items)
+        public OperationResult<Tasks> AddTasks(string userId, TaskToManipulateDTO[] items)
         {
-            var childUser = await _userSrv.FindChildByParentId(userId);
+            var childUser = _userSrv.FindChildByParentId(userId);
 
             if (childUser != null)
             {
