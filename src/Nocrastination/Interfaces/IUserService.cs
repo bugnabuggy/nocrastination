@@ -9,7 +9,6 @@ namespace Nocrastination.Interfaces
     public interface IUserService
     {
         Task<AppUser> FindUserById(string userId);
-        AppUser FindParentByChildId(string userId);
         AppUser FindChildByParentId(string userId);
     }
 }

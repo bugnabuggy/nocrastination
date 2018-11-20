@@ -41,6 +41,7 @@ namespace Nocrastination.Controllers
         // POST api/register/child
         [Authorize]
         [HttpPost]
+        [Route("child")]
         public async Task<IActionResult> RegisterChild([FromBody] RegisterChildDTO child)
         {
             var user = await _helper.GetUserFromClaims(User.Claims);

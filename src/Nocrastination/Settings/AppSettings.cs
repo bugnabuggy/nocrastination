@@ -12,6 +12,6 @@ namespace Nocrastination.Settings
 
     public class StoreSettings
     {
-        public static int PointsMultiplier { get; set; }
+        public static double PointsMultiplier { get; set; }
     }
 }
