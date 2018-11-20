@@ -57,7 +57,9 @@ namespace Nocrastination
                 .AddDefaultTokenProviders();
 
             services.AddIdentityServer(opt =>
-                    opt.PublicOrigin = Configuration.GetSection("ServerHost").Value)
+                {
+                    opt.PublicOrigin = Configuration.GetSection("ServerHost").Value;
+                })
                 .AddDeveloperSigningCredential()
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients())

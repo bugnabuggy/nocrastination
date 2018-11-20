@@ -46,6 +46,7 @@ namespace Nocrastination
                         Picture = item.Picture,
                         Points = item.Points
                     });
+                    ctx.SaveChanges();
                 }
             }
         }
