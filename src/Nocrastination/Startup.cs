@@ -21,6 +21,7 @@ namespace Nocrastination
     {
         public IHostingEnvironment Enviroment;
         public IConfiguration Configuration { get; }
+        private AppConfigurator _appCfg = new AppConfigurator();
 
         public Startup(IHostingEnvironment enviroment)
         {
@@ -41,20 +42,9 @@ namespace Nocrastination
             services.AddSingleton<IConfiguration>(Configuration);
             //services.AddSingleton(Configuration.GetSection("IdentityServer:Api").Get<ApiSettings>());
             //services.AddSingleton(Configuration.GetSection("IdentityServer:Client").Get<ClientSettings>());
-            services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
             //services.AddSingleton(Configuration.GetSection("AppSettings:Store").Get<StoreSettings>());
+            services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
             services.AddSingleton(Configuration.GetSection("AppSettings").Get<AppSettings>());
-
-            services.AddScoped<IRepository<AppUser>, DbRepository<AppUser>>();
-            services.AddScoped<IRepository<Tasks>, DbRepository<Tasks>>();
-            services.AddScoped<IRepository<Store>, DbRepository<Store>>();
-            services.AddScoped<IRepository<Purchase>, DbRepository<Purchase>>();
-
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITasksService, TasksService>();
-            services.AddScoped<IStoreService, StoreService>();
-            services.AddScoped<IPurchaseService, PurchaseService>();
 
             services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -94,6 +84,8 @@ namespace Nocrastination
                     return Task.CompletedTask;
                 };
             });
+
+            _appCfg.ConfigureServices(services);
 
             services.AddMvcCore()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
