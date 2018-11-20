@@ -46,8 +46,10 @@ namespace Nocrastination
             services.AddSingleton(Configuration.GetSection("AppSettings").Get<AppSettings>());
 
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITasksService, TasksService>();
+            services.AddScoped<IStoreService, StoreService>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
 
             services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
