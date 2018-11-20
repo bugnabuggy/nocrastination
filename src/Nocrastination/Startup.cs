@@ -45,6 +45,11 @@ namespace Nocrastination
             //services.AddSingleton(Configuration.GetSection("AppSettings:Store").Get<StoreSettings>());
             services.AddSingleton(Configuration.GetSection("AppSettings").Get<AppSettings>());
 
+            services.AddScoped<IRepository<AppUser>, DbRepository<AppUser>>();
+            services.AddScoped<IRepository<Tasks>, DbRepository<Tasks>>();
+            services.AddScoped<IRepository<Store>, DbRepository<Store>>();
+            services.AddScoped<IRepository<Purchase>, DbRepository<Purchase>>();
+
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITasksService, TasksService>();
