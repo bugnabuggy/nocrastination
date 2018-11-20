@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Nocrastination.Core.Entities;
 using Nocrastination.Data;
+using Nocrastination.Helpers;
 using Nocrastination.Interfaces;
 using Nocrastination.Services;
 using Nocrastination.Settings;
@@ -25,6 +26,7 @@ namespace Nocrastination
             services.AddScoped<ITasksService, TasksService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IClaimsHelper, ClaimsHelper>();
         }
 
         public void Initialize(IServiceProvider services)

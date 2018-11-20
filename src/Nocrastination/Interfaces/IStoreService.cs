@@ -9,6 +9,6 @@ namespace Nocrastination.Interfaces
     public interface IStoreService
     {
         IEnumerable<Store> GetAllItemsInStore();
-        bool IsStoreItemExists(string itemId, out Store item)
+        bool IsStoreItemExists(string itemId, out Store item);
     }
 }
