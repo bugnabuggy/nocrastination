@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router, CanActivate } from '@angular/router';
-import { share } from 'rxjs/operators';
+import { share, mergeMap} from 'rxjs/operators';
+import { } from 'rxjs';
 import { Endpoints } from '../enums/Endpoints';
 
 
@@ -9,8 +10,8 @@ import { Endpoints } from '../enums/Endpoints';
 @Injectable()
 export class SecurityService {
     isActivate: boolean = true;
-    token: string ;
-    userId: string;
+    token: string;
+
     isAdmin: boolean = false;
     tokenExpirationDate: Date;
 
@@ -18,30 +19,24 @@ export class SecurityService {
         public router: Router,
         public http: HttpClient
     ) {
-        console.log('security serviec constructor');
         const userTokens = JSON.parse(localStorage.getItem('userTokens'));
         if (userTokens) {
             this.setTokens(userTokens);
-        }
-
-        const userId = JSON.parse(localStorage.getItem('userId'));
-        if (userId) {
-            this.userId = userId;
         }
     }
 
     canActivate(): boolean {
         if (!this.isAuthenticated()) {
-          this.router.navigate(['authorization']);
-          this.isAdmin = false;
-          this.isActivate = false;
-          return false;
+            this.router.navigate(['authorization']);
+            this.isAdmin = false;
+            this.isActivate = false;
+            return false;
         } else {
             this.isAdmin = true;
-          this.isActivate = true;
-          return true;
+            this.isActivate = true;
+            return true;
         }
-      }
+    }
 
     login(login, password) {
         const httpOptions = {
@@ -60,14 +55,18 @@ export class SecurityService {
 
         const observable = this.http.post(url,
             body,
-            httpOptions).pipe(share());
+            httpOptions)
+            .pipe(share());
+
+        observable
+            .subscribe(
+                val => {
+                    console.log(val);
+                    this.setTokens(val);
+                }
+            );
 
         return observable;
-    }
-
-    setUser(user: any) {
-        this.userId = user.id;
-        localStorage.setItem('userId', JSON.stringify(user.id));
     }
 
     setTokens(authResponse: any): any {

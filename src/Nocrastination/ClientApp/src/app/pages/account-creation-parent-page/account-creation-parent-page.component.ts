@@ -29,7 +29,6 @@ export class AccountCreationParentPagecomponentComponent {
 
             this.regSvc.registerParent(this.parent)
                 .subscribe((val: any) => {
-                    debugger;
                     this.securitySvc.setTokens(val.data[0]);
                     this.router.navigate(['/create-child-account']);
                 },

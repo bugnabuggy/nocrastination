@@ -1,3 +1,31 @@
-<p>
-  parent-dashboard works!
-</p>
+<div class='full-height main-background d-flex flex-column'>
+  <div class='empty-header'></div>
+  <div class='row flex-1 text-center align-items-center m-0'>
+    <div class="col-sm-6 big-btn p-0">
+      <h3>What would you like to do?</h3>
+    </div>
+    <div class="col-sm-6">
+      <button 
+        [routerLink]="['/view-schedule']"
+        class='btn big-btn mt-3 mt-sm-0'>
+        View current schedule
+      </button>
+    </div>
+  </div>
+  <div class='b row flex-1  text-center  align-items-center m-0'>
+    <div class="col-sm-6 p-0">
+      <button [routerLink]="['/add-to-shedule']" class='btn big-btn mt-3 mt-sm-0'>
+        Add to schedule
+      </button>
+    </div>
+    <div class="col-sm-6 p-0 mt-3 mt-sm-0">
+      <button [routerLink]="['/check-off']" class='btn big-btn '>
+        Check off completed tasks
+      </button>
+    </div>
+  </div>
+  <div class='empty-footer d-flex align-items-center '>
+    <button class='offset-8 font-bold btn col-2' (click)="logout()">Logout</button>
+  </div>
+
+</div>

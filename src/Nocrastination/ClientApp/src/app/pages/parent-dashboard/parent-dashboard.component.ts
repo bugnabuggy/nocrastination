@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SecurityService } from '../../services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-parent-dashboard',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParentDashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private securitySvc: SecurityService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
+  logout() {
+    this.securitySvc.clearTokens();
+    this.router.navigate(['/']);
+  }
 }

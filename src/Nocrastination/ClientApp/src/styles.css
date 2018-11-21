@@ -1,15 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 
 html{
     min-height: 100%;
-    min-width: 100vh;
+    min-width: 100vw;
     background-color: #a94442;
 }
 
 body{ 
     height: 100%;
     background-color: #42A948;
+}
+
+.flex-1{
+    flex: 1;
+}
+
+.main-background{
+    background-color: #58E2C2;
+}
+
+.empty-space {
+    height: 80px;
+}
+
+.full-height {
+    min-height: 100vh;
+}
+
+.big-btn {
+    min-width: 30vw;
+    min-height: 25vh;
+    font-size: 24px !important;
+    font-weight: bold !important;
 }
 
 .background-image {

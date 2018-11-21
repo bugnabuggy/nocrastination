@@ -1,0 +1,39 @@
+<li class='row mt-2'>
+  <div class="col">
+      <input 
+        placeholder="Task"
+        [(ngModel)]="task.name"
+        class="form-control" 
+        type="text"
+        (change)="onSave()"> 
+  </div>
+  <div class="col-sm-3">
+      <input class="form-control" 
+          [(ngModel)]="task.startDate"
+          type="datetime" 
+          [owlDateTime]="dtFrom" 
+          [owlDateTimeTrigger]="dtFrom" 
+          placeholder="From"
+          (dateTimeChange)="onSave()">
+      <owl-date-time
+        [pickerMode]="dialog"
+        #dtFrom>
+      </owl-date-time>
+  </div>
+  <div class="col-sm-3">
+      <input class="form-control" 
+          [(ngModel)]="task.endDate"
+          type="datetime" 
+          [owlDateTime]="dtTo" 
+          [owlDateTimeTrigger]="dtTo" 
+          placeholder="To"
+          (dateTimeChange)="onSave()">
+      <owl-date-time
+        [pickerMode]="dialog"
+        #dtTo>
+      </owl-date-time>
+  </div>
+    <div class="col-1">
+      <button class='btn' title="delete" (click)='onDelete()'>X</button>
+    </div>
+</li>

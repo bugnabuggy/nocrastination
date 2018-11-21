@@ -7,9 +7,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NocrastinationHttpInterceptor } from './interceptors/nocrastination-http.interceptor';
 
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 import { AppComponent } from './app.component';
 
-import {MODULE_COMPONENTS, MODULE_SERVICES, MATERIAL_DESIGN } from './moduleExports';
+import { MODULE_COMPONENTS, MODULE_SERVICES, MATERIAL_DESIGN } from './moduleExports';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import {MODULE_COMPONENTS, MODULE_SERVICES, MATERIAL_DESIGN } from './moduleExpo
     AppRoutingModule,
     FormsModule,
     MATERIAL_DESIGN,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ],
   providers: [
     MODULE_SERVICES,

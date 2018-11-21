@@ -34,21 +34,20 @@ export class LogInPageComponent implements OnInit {
   }
 
   login(form) {
-    if ( form.valid) {
+    if (form.valid) {
       this.securitySvc.login(this.data.username, this.data.password)
-      .subscribe(
-        val => {
-          this.securitySvc.setTokens(val);
-          if (this.type == 'child') {
-            this.router.navigate(['/child-dashboard']);
-          } else {
-            this.router.navigate(['/create-child-account']);
-           }
-        },
-        err => {
-          this.notification.error('Error on login');
-        }
-      );
+        .subscribe(
+          val => {
+            if (this.type == 'child') {
+              this.router.navigate(['/child-dashboard']);
+            } else {
+              this.router.navigate(['/parent-dashboard']);
+            }
+          },
+          err => {
+            this.notification.error('Error on login');
+          }
+        );
     }
   }
 }

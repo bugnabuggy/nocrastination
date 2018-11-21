@@ -6,18 +6,27 @@ import { AccountCreationChildPageComponent,
   LogInPageComponent,
   ChildDashboardComponent,
   ParentDashboardComponent,
-  LoginSelectPageComponent} from './pages/index';
-import { SecurityService } from './services';
+  LoginSelectPageComponent,
+  AddToSchedulePageComponent,
+  CheckOffPageComponent,
+  ViewSchedulePageComponent} from './pages/index';
+import { SecurityService, UserService } from './services';
 
 const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },
   { path: 'main', component: MainPageComponent },
   { path: 'create-child-account', component: AccountCreationChildPageComponent },
   { path: 'create-parent-account', component: AccountCreationParentPagecomponentComponent },
+  { path: 'log-in', component: LogInPageComponent},
   { path: 'log-in/:type', component: LogInPageComponent},
   { path: 'log-in-select', component: LoginSelectPageComponent},
   { path: 'parent-dashboard', component: ParentDashboardComponent, canActivate: [SecurityService]},
   { path: 'child-dashboard', component: ChildDashboardComponent, canActivate: [SecurityService]},
+
+  { path: 'add-to-shedule', component: AddToSchedulePageComponent, canActivate: [SecurityService, UserService ]},
+  { path: 'check-off', component: CheckOffPageComponent, canActivate: [SecurityService, UserService]},
+  { path: 'view-schedule', component: ViewSchedulePageComponent, canActivate: [SecurityService]},
+  
   // { path: 'infopole', component: InfopoleComponent,  },
   // { path: 'infopole/:key/:reportId', component: InfopoleComponent },
   // { path: 'infopole/:key', component: InfopoleComponent,      },

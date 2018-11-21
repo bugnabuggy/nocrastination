@@ -5,3 +5,8 @@ export * from './log-in-page/log-in-page.component';
 export * from './parent-dashboard/parent-dashboard.component';
 export * from './child-dashboard/child-dashboard.component';
 export * from './login-select-page/login-select-page.component';
+
+export * from './add-to-schedule-page/add-to-schedule-page.component';
+export * from './view-schedule-page/view-schedule-page.component';
+export * from './check-off-page/check-off-page.component';
+

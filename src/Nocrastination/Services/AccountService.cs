@@ -75,7 +75,8 @@ namespace Nocrastination.Services
                 FullName = regChild.FullName,
                 Age = regChild.Age,
                 Sex = regChild.Sex,
-                IsChild = true
+                IsChild = true,
+				ParentId = id
             };
 
             var result = await _userManager.CreateAsync(newUser, regChild.Password);

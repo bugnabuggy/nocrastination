@@ -19,11 +19,9 @@ export class AccountCreationChildPageComponent {
     ) {}
 
     createAccount (form) {
-      debugger;
       if (form.valid &&
           this.child.age > 0 &&
           this.child.password == this.child.confirmPassword) {
-            this.child.parentId = this.securitySvc.userId;
             this.regSvc.registerChild(this.child)
             .subscribe(
               (val) => {

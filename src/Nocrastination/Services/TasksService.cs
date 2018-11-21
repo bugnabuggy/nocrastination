@@ -75,9 +75,10 @@ namespace Nocrastination.Services
             };
         }
 
-        public OperationResult<Tasks> AddTasks(string userId, TaskToManipulateDTO[] items)
+        public OperationResult<Tasks> AddTasks(string userId, TaskToManipulateDTO item)
         {
             var childUser = _userSrv.FindChildByParentId(userId);
+	        var success = true;
 
             if (childUser != null)
             {
@@ -85,36 +86,34 @@ namespace Nocrastination.Services
 
                 var messages = new List<string>() { };
 
-                foreach (var item in items)
-                {
-                    if (!IsValid(item))
-                    {
-                        messages.Add($"Task with name = [{item.Name}], " +
-                                     $"start_time = [{item.StartDate}] and " +
-                                     $"end_time = [{item.EndDate}] " +
-                                     "may not be added cause of ovelapping.");
-                        continue;
-                    }
+	            if (!IsValid(item))
+	            {
+		            messages.Add($"Task with name = [{item.Name}], " +
+		                         $"start_time = [{item.StartDate}] and " +
+		                         $"end_time = [{item.EndDate}] " +
+		                         "may not be added cause of ovelapping.");
+		            success = false;
 
-                    tasks.Add(new Tasks()
-                    {
-                        Name = item.Name,
-                        StartDate = (DateTime)item.StartDate,
-                        EndDate = (DateTime)item.EndDate,
-                        ParentId = userId,
-                        ChildId = childUser.Id
-                    });
-                }
+	            } else {
+		            tasks.Add(new Tasks()
+		            {
+			            Name = item.Name,
+			            StartDate = (DateTime)item.StartDate,
+			            EndDate = (DateTime)item.EndDate,
+			            ParentId = userId,
+			            ChildId = childUser.Id
+		            });
+				}
 
-                return new OperationResult<Tasks>()
-                {
-                    Success = true,
-                    Messages = new[] { "Following tasks were added successfully." },
-                    Data = _tasksRepo.Add(tasks)
-                };
-            }
+				return new OperationResult<Tasks>()
+				{
+					Success = success,
+					Messages = new[] { "Following tasks were added successfully." },
+					Data = _tasksRepo.Add(tasks)
+				};
+			}
 
-            return new OperationResult<Tasks>()
+			return new OperationResult<Tasks>()
             {
                 Messages = new[] { "You don`t have registered children." }
             };
@@ -151,26 +150,23 @@ namespace Nocrastination.Services
             };
         }
 
-        public OperationResult RemoveTasks(string userId, string[] taskIds)
+        public OperationResult RemoveTask(string userId, string taskId)
         {
             var messages = new List<string>();
 
-            foreach (var taskId in taskIds)
-            {
-                if (!IsTaskExists(taskId, out var task))
-                {
-                    messages.Add($"There is no task with id = [{taskId}]");
-                }
+	        if (!IsTaskExists(taskId, out var task))
+	        {
+		        messages.Add($"There is no task with id = [{taskId}]");
+	        }
 
-                if (task.ParentId != userId)
-                {
-                    messages.Add($"You have no right to remove task with id = [{taskId}]");
-                }
+	        if (task.ParentId != userId)
+	        {
+		        messages.Add($"You have no right to remove task with id = [{taskId}]");
+	        }
 
-                _tasksRepo.Delete(task);
+	        _tasksRepo.Delete(task);
 
-                messages.Add($"Task with id = [{taskId}] was removed successfully.");
-            }
+	        messages.Add($"Task with id = [{taskId}] was removed successfully.");
 
             return new OperationResult()
             {
@@ -187,7 +183,7 @@ namespace Nocrastination.Services
             }
 
             var crossedItem = _tasksRepo.Get(x => !(item.StartDate < x.EndDate &&
-                                                    item.EndDate > x.StartDate));
+                                                    item.EndDate > x.StartDate)).FirstOrDefault();
 
             if (crossedItem != null)
             {

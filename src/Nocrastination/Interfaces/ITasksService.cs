@@ -12,8 +12,8 @@ namespace Nocrastination.Interfaces
     {
         Task<OperationResult<TaskDTO>> GetTasks(string userId);
         Task<OperationResult<TaskDTO>> GetLatestTask(string userId);
-        OperationResult<Tasks> AddTasks(string userId, TaskToManipulateDTO[] items);
+        OperationResult<Tasks> AddTasks(string userId, TaskToManipulateDTO item);
         OperationResult<Tasks> EditTask(string userId, string taskId, TaskToManipulateDTO item);
-        OperationResult RemoveTasks(string userId, string[] taskIds);
+        OperationResult RemoveTask(string userId, string taskId);
     }
 }

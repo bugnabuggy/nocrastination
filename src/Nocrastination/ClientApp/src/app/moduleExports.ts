@@ -39,9 +39,20 @@ import { AccountCreationChildPageComponent,
          LogInPageComponent,
          ParentDashboardComponent,
          ChildDashboardComponent,
-         LoginSelectPageComponent} from './pages/index';
+         LoginSelectPageComponent,
+         AddToSchedulePageComponent,
+         CheckOffPageComponent,
+         ViewSchedulePageComponent} from './pages/index';
+
+import {
+        TaskEditorComponent
+ } from './components';
+
 import { SecurityService,
-         UserService } from './services';
+         UserService,
+         SchedulerService} from './services';
+
+
 
 import { CdkTableModule } from '@angular/cdk/table';
 import { RegistrationService } from './services/registration.service';
@@ -89,13 +100,19 @@ const MODULE_COMPONENTS = [
     LogInPageComponent,
     ParentDashboardComponent,
     ChildDashboardComponent,
-    LoginSelectPageComponent
+    LoginSelectPageComponent,
+    AddToSchedulePageComponent,
+    CheckOffPageComponent,
+    ViewSchedulePageComponent,
+
+    TaskEditorComponent
 ];
 
 const MODULE_SERVICES = [
     SecurityService,
     UserService,
-    RegistrationService
+    RegistrationService,
+    SchedulerService
 ];
 
 export { MODULE_COMPONENTS, MODULE_SERVICES, MATERIAL_DESIGN };

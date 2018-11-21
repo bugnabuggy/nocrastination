@@ -58,16 +58,16 @@ namespace Nocrastination.Controllers
 
         // POST api/tasks
         [HttpPost]
-        public async Task<IActionResult> AddTasks([FromBody]TaskToManipulateDTO[] items)
+        public async Task<IActionResult> AddTasks([FromBody]TaskToManipulateDTO item)
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
-            if (!user.IsChild)
+            if (user.IsChild)
             {
                 return StatusCode(403, "You have no rights to do this.");
             }
 
-            var result = _taskSrv.AddTasks(user.Id, items);
+            var result = _taskSrv.AddTasks(user.Id, item);
 
             if (result.Success)
             {
@@ -84,7 +84,7 @@ namespace Nocrastination.Controllers
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
-            if (!user.IsChild)
+            if (user.IsChild)
             {
                 return StatusCode(403, "You have no rights to do this.");
             }
@@ -100,8 +100,8 @@ namespace Nocrastination.Controllers
         }
         
         // DELETE api/tasks
-        [HttpDelete]
-        public async Task<IActionResult> RemoveTasks(string[] taskIds)
+        [HttpDelete("{taskId}")]
+        public async Task<IActionResult> RemoveTasks(string taskId)
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
@@ -110,7 +110,7 @@ namespace Nocrastination.Controllers
                 return StatusCode(403, "You have no rights to do this.");
             }
 
-            var result = _taskSrv.RemoveTasks(user.Id, taskIds);
+            var result = _taskSrv.RemoveTask(user.Id, taskId);
 
             if (result.Success)
             {
