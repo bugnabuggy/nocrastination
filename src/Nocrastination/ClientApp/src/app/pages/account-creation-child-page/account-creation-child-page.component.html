@@ -1,0 +1,82 @@
+<div class="background-image d-flex justify-content-center align-items-center flex-column ">
+    <form #childForm="ngForm" (ngSubmit)="createAccount(childForm)"
+    class="d-flex justify-content-center align-items-center flex-column">
+        <h1 class="font-weight-normal comic-font text-light">Create Your Child's Account!</h1>
+        <div class="row">
+            <div class="col col-lg-6">
+                <div class="form-group">
+                    <input required type="text" 
+                        [(ngModel)]="child.fullName" 
+                        class="form-control text-center" 
+                        name="fullNaem"
+                        aria-describedby="full name" 
+                        placeholder="Full Name">
+                </div>
+
+                <div class="form-group">
+                    <input required type="text" 
+                        [(ngModel)]="child.userName" 
+                        class="form-control text-center" 
+                        name="username"
+                        placeholder="Username">
+                </div>
+
+                <div class="form-group">
+                    <input required type="password"
+                        [(ngModel)]="child.password"
+                        class="form-control text-center"
+                        name="password"
+                        minlength="4"
+                        placeholder="Password">
+                </div>
+
+                <div class="form-group">
+                    <input required type="password" 
+                        [(ngModel)]="child.confirmPassword" 
+                        class="form-control text-center"
+                        minlength="4"
+                        name="confirmPassword" 
+                        placeholder="Confirm Password">
+                </div>
+
+            </div>
+            <div class="col col-lg-6 margin-top">
+                <div class="form-group">
+                    <input required type="number"
+                        min="0" 
+                        [(ngModel)]="child.age"
+                        class="form-control text-center"
+                        name="age"
+                        placeholder="Age">
+                </div>
+                <div class="form-check">
+                    <input 
+                        required
+                        [(ngModel)]="child.sex"
+                        class="form-check-input"
+                        type="radio" 
+                        name="sex"
+                        value="M"
+                        >
+                    <label class="form-check-label" for="exampleRadios1">
+                        Male
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input 
+                        required
+                        [(ngModel)]="child.sex"
+                        class="form-check-input" 
+                        type="radio" 
+                        name="sex" 
+                        value="F">
+                    <label class="form-check-label" for="exampleRadios2">
+                        Female
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <button class="margin-left btn btn-lg " [disabled]="!childForm.form.valid" type="submit">Continue</button>
+    </form>
+</div>

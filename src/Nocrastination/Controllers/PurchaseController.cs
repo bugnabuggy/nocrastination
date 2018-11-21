@@ -32,7 +32,7 @@ namespace Nocrastination.Controllers
 
             if (user.IsChild)
             {
-                return Ok(_purchaseSrv.GetItems(user.Id)));
+                return Ok(_purchaseSrv.GetItems(user.Id));
             }
 
             return StatusCode(403);

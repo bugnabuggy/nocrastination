@@ -1,1 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+html{
+    min-height: 100%;
+    min-width: 100vh;
+    background-color: #a94442;
+}
+
+body{ 
+    height: 100%;
+    background-color: #42A948;
+}
+
+.background-image {
+    background-image: url('/assets/background.jpg') ;
+    min-height: 100vh;
+    /* Preserve aspet ratio */
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-size:cover; 
+}
+
+.comic-font {
+    font-family: "Comic Sans MS", "Comic Sans";
+}
+
+.spacer {
+    padding: 20px 0;
+}
+
+.font-bold {
+    font-weight: bold !important;
+}
+
+.big-button {
+    width: 200px;
+    height: 100px;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    margin-bottom: 2em !important;
+}
+
+
+.main-subtitle {
+    font-family: "Comic Sans MS", "Comic Sans";
+    position: absolute;
+    bottom: 20%;
+    right:10%;
+    max-width: 85%;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; 
+  }
+  
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; 
+  }
+
+.log-in{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+
+.bg-danger .mat-button-wrapper {
+    color: #fff;
+}
+ 

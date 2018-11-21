@@ -1,0 +1,51 @@
+<div class="background-image d-flex justify-content-center align-items-center flex-column">
+    <form class="form-signin mw-50" #parentForm="ngForm" (ngSubmit)="createAccount()">
+
+        <h1 class="font-weight-normal comic-font text-light">Create Your Account!</h1>
+        <div class='spacer'></div>
+
+        <div class="form-group">
+            <input required type="text"
+                [(ngModel)]="parent.fullName"
+                class="form-control text-center"
+                name="fullNaem" 
+                aria-describedby="full name" 
+                placeholder="Full Name">
+        </div>
+
+        <div class="form-group">
+            <input required type="text" 
+                [(ngModel)]="parent.userName"
+                class="form-control text-center" 
+                name="username" 
+                placeholder="Username">
+        </div>
+
+        <div class="form-group">
+            <input required  type="email" 
+                [(ngModel)]="parent.email"
+                class="form-control text-center" 
+                name="email"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"  
+                placeholder="Email">
+        </div>
+
+        <div class="form-group">
+            <input required  type="password" 
+                [(ngModel)]="parent.password"
+                class="form-control text-center" 
+                name="password" 
+                placeholder="Password">
+        </div>
+
+        <div class="form-group">
+            <input required  type="password"
+                [(ngModel)]="parent.confirmPassword"
+                class="form-control text-center" 
+                name="confirmPassword" 
+                placeholder="Confirm Password">
+        </div>
+        <div class='spacer'></div>
+        <button class=" font-bold btn btn-lg btn-block " [disabled]="!parentForm.form.valid" type="submit">Continue</button>
+    </form>
+</div>

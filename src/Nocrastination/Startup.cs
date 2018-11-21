@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nocrastination.Core.Entities;
 using Nocrastination.Data;
+using Nocrastination.Helpers;
 using Nocrastination.Interfaces;
 using Nocrastination.Services;
 using Nocrastination.Settings;
@@ -38,10 +40,17 @@ namespace Nocrastination
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfiguration>(Configuration);
-            //services.AddSingleton(Configuration.GetSection("IdentityServer:Api").Get<ApiSettings>());
-            //services.AddSingleton(Configuration.GetSection("IdentityServer:Client").Get<ClientSettings>());
-            services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
+			services.AddSingleton<IConfiguration>(Configuration);
+
+	        var identityServerSection = Configuration.GetSection("IdentityServer");
+	        IdentityServerSettings.Client = identityServerSection["Client"];
+			IdentityServerSettings.Api = identityServerSection["Api"];
+	        IdentityServerSettings.Secret = identityServerSection["Secret"];
+	        IdentityServerSettings.AccessTokenLifetime = int.Parse(identityServerSection["AccessTokenLifetime"]);
+			IdentityServerSettings.ServerHost = identityServerSection["ServerHost"];
+
+			//services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
+
             //services.AddSingleton(Configuration.GetSection("AppSettings:Store").Get<StoreSettings>());
             services.AddSingleton(Configuration.GetSection("AppSettings").Get<AppSettings>());
 
@@ -50,43 +59,49 @@ namespace Nocrastination
             services.AddScoped<IRepository<Store>, DbRepository<Store>>();
             services.AddScoped<IRepository<Purchase>, DbRepository<Purchase>>();
 
+	        services.AddScoped<IClaimsHelper, ClaimsHelper>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITasksService, TasksService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
 
-            services.AddDbContext<ApplicationDbContext>(opt =>
+			services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>(opt =>
             {
-                opt.Password.RequireNonAlphanumeric = false;
-            })
+	            opt.Password.RequiredLength = 3;
+	            opt.Password.RequireLowercase = false;
+	            opt.Password.RequireUppercase = false;
+	            opt.Password.RequireNonAlphanumeric = false;
+	            opt.Password.RequireDigit = false;
+			})
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddIdentityServer(opt =>
-                    opt.PublicOrigin = Configuration.GetSection("ServerHost").Value)
+			services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+				.AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+				.AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients())
                 .AddAspNetIdentity<AppUser>();
 
-            services.AddAuthentication(opt =>
-            {
-                opt.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-                opt.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddIdentityServerAuthentication(opt =>
-            {
-                opt.Authority = Configuration.GetSection("ServerHost").Value;
-                opt.RequireHttpsMetadata = false;
-                opt.ApiName = ClientSettings.Id;
-                opt.ApiSecret = ClientSettings.Secret;
-            });
+			services.AddAuthentication(opt =>
+				{
+					opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+					opt.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+					opt.DefaultChallengeScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+				})
+				.AddIdentityServerAuthentication(opt =>
+				{
+					opt.Authority = IdentityServerSettings.ServerHost;
+					opt.RequireHttpsMetadata = false;
+					opt.ApiName = IdentityServerSettings.Api;
+					opt.ApiSecret = IdentityServerSettings.Secret;
+				});
 
-            services.ConfigureApplicationCookie(opt =>
+			services.ConfigureApplicationCookie(opt =>
             {
                 opt.Events.OnRedirectToLogin = context =>
                 {
@@ -95,18 +110,17 @@ namespace Nocrastination
                 };
             });
 
-            services.AddMvcCore()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddCors()
-                .AddFormatterMappings()
-                .AddCacheTagHelper()
-                .AddJsonFormatters()
-                .AddAuthorization();
+			services.AddMvcCore()
+				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+				.AddCors()
+				.AddFormatterMappings()
+				.AddCacheTagHelper()
+				.AddJsonFormatters()
+				.AddAuthorization();
 
-            services.AddMvc();
 
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+			// In production, the Angular files will be served from this directory
+			services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
@@ -132,8 +146,8 @@ namespace Nocrastination
                 builder.AllowAnyOrigin();
             });
 
-            app.UseIdentityServer();
-
+			app.UseIdentityServer();
+	        
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

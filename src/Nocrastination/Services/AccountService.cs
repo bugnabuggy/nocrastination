@@ -44,6 +44,7 @@ namespace Nocrastination.Services
             {
                 return new OperationResult()
                 {
+					Data = new [] { newUser },
                     Messages = new[] { "User was successfully registered." },
                     Success = true
                 };
@@ -94,14 +95,14 @@ namespace Nocrastination.Services
             };
         }
 
-        private bool IsUserExists(RegisterUserDTO user, out string item)
-        {
-            if (_userManager.FindByEmailAsync(user.Email).Result != null)
-            {
-                item = "Email";
-                return true;
-            }
+	    public async Task<AppUser> GetUser(string id)
+	    {
+		    var user = await _userManager.FindByIdAsync(id);
+		    return user;
+	    }
 
+	    private bool IsUserExists(RegisterUserDTO user, out string item)
+        {
             if (_userManager.FindByNameAsync(user.UserName).Result != null)
             {
                 item = "UserName";

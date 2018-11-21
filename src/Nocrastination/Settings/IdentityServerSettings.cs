@@ -7,19 +7,13 @@ namespace Nocrastination.Settings
 {
     public class IdentityServerSettings
     {
-        public static ApiSettings Api { get; set; }
-        public static ClientSettings Client { get; set; }
-        public static int AccessTokenLifetime { get; set; }
+	    public static string Api;
+	    public static string Client;
+	    public static string Secret;
+		public static int AccessTokenLifetime;
+	    public static string ServerHost;
+
     }
 
-    public class ApiSettings
-    {
-        public static string Name { get; set; }
-    }
-
-    public class ClientSettings
-    {
-        public static string Id { get; set; }
-        public static string Secret { get; set; }
-    }
+   
 }

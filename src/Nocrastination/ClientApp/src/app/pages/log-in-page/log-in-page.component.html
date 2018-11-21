@@ -1,0 +1,24 @@
+<div class="background-image d-flex justify-content-center align-items-center flex-column ">
+        <form class="form-signin text-center" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+    
+                <h1 class="font-weight-normal comic-font text-light">{{message}}</h1>
+                <div class='spacer'></div>
+        
+                <div class="form-group">
+                    <input required type="text"
+                        [(ngModel)]="data.username"
+                        class="form-control text-center"
+                        name="username" 
+                        placeholder="Username">
+                </div>
+        
+                <div class="form-group">
+                    <input required type="password" 
+                        [(ngModel)]="data.password"
+                        class="form-control text-center" 
+                        name="password" 
+                        placeholder="Password">
+                </div>
+                <button class="margin-left btn btn-lg " [disabled]="!loginForm.form.valid" type="submit">Log In</button>
+        </form>
+    </div>
