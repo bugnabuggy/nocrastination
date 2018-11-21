@@ -21,5 +21,22 @@ namespace Nocrastination.Services
         {
             return _storeRepo.Data;
         }
+
+        public bool IsStoreItemExists(string itemId, out Store item)
+        {
+            item = null;
+
+            if (Guid.TryParse(itemId, out Guid id))
+            {
+                item = _storeRepo.Data.FirstOrDefault(x => x.Id == id);
+
+                if (item != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

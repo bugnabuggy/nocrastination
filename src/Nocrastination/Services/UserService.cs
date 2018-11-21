@@ -26,12 +26,7 @@ namespace Nocrastination.Services
         {
             return _userRepo.Get(x => x.ParentId == userId).FirstOrDefault();
         }
-
-        public AppUser FindParentByChildId(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public async Task<AppUser> FindUserById(string userId)
         {
             return await _userManager.FindByIdAsync(userId);
