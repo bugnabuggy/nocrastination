@@ -83,8 +83,19 @@ namespace Nocrastination.Services
             {
                 var tasks = new List<Tasks>() { };
 
+                var messages = new List<string>() { };
+
                 foreach (var item in items)
                 {
+                    if (!IsValid(item))
+                    {
+                        messages.Add($"Task with name = [{item.Name}], " +
+                                     $"start_time = [{item.StartDate}] and " +
+                                     $"end_time = [{item.EndDate}] " +
+                                     "may not be added cause of ovelapping.");
+                        continue;
+                    }
+
                     tasks.Add(new Tasks()
                     {
                         Name = item.Name,
@@ -98,7 +109,7 @@ namespace Nocrastination.Services
                 return new OperationResult<Tasks>()
                 {
                     Success = true,
-                    Messages = new[] { "Tasks were added successfully." },
+                    Messages = new[] { "Following tasks were added successfully." },
                     Data = _tasksRepo.Add(tasks)
                 };
             }
@@ -166,6 +177,24 @@ namespace Nocrastination.Services
                 Success = true,
                 Messages = messages
             };
+        }
+
+        private bool IsValid(TaskToManipulateDTO item)
+        {
+            if (item.StartDate >= item.EndDate)
+            {
+                return false;
+            }
+
+            var crossedItem = _tasksRepo.Get(x => !(item.StartDate < x.EndDate &&
+                                                    item.EndDate > x.StartDate));
+
+            if (crossedItem != null)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private IQueryable<Tasks> GetTasksData(string userId, bool isChild)

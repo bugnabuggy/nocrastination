@@ -18,6 +18,7 @@ namespace Nocrastination
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
+            var appCfg = new AppConfigurator();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -26,6 +27,8 @@ namespace Nocrastination
                 {
                     var db = services.GetRequiredService<ApplicationDbContext>();
                     db.Database.Migrate();
+
+                    appCfg.Initialize(services);
                 }
                 catch (Exception ex)
                 {

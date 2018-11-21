@@ -23,6 +23,7 @@ namespace Nocrastination
     {
         public IHostingEnvironment Enviroment;
         public IConfiguration Configuration { get; }
+        private AppConfigurator _appCfg = new AppConfigurator();
 
         public Startup(IHostingEnvironment enviroment)
         {
@@ -49,24 +50,11 @@ namespace Nocrastination
 	        IdentityServerSettings.AccessTokenLifetime = int.Parse(identityServerSection["AccessTokenLifetime"]);
 			IdentityServerSettings.ServerHost = identityServerSection["ServerHost"];
 
-			//services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
-
-            //services.AddSingleton(Configuration.GetSection("AppSettings:Store").Get<StoreSettings>());
+			
+            services.AddSingleton(Configuration.GetSection("IdentityServer").Get<IdentityServerSettings>());
             services.AddSingleton(Configuration.GetSection("AppSettings").Get<AppSettings>());
 
-            services.AddScoped<IRepository<AppUser>, DbRepository<AppUser>>();
-            services.AddScoped<IRepository<Tasks>, DbRepository<Tasks>>();
-            services.AddScoped<IRepository<Store>, DbRepository<Store>>();
-            services.AddScoped<IRepository<Purchase>, DbRepository<Purchase>>();
-
-	        services.AddScoped<IClaimsHelper, ClaimsHelper>();
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITasksService, TasksService>();
-            services.AddScoped<IStoreService, StoreService>();
-            services.AddScoped<IPurchaseService, PurchaseService>();
-
-			services.AddDbContext<ApplicationDbContext>(opt =>
+            services.AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>(opt =>
@@ -110,14 +98,15 @@ namespace Nocrastination
                 };
             });
 
-			services.AddMvcCore()
-				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-				.AddCors()
-				.AddFormatterMappings()
-				.AddCacheTagHelper()
-				.AddJsonFormatters()
-				.AddAuthorization();
+            _appCfg.ConfigureServices(services);
 
+            services.AddMvcCore()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddCors()
+                .AddFormatterMappings()
+                .AddCacheTagHelper()
+                .AddJsonFormatters()
+                .AddAuthorization();
 
 			// In production, the Angular files will be served from this directory
 			services.AddSpaStaticFiles(configuration =>

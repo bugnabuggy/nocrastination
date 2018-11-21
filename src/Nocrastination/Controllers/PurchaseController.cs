@@ -30,7 +30,7 @@ namespace Nocrastination.Controllers
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
-            if (user.IsChild)
+            if (user != null && user.IsChild)
             {
                 return Ok(_purchaseSrv.GetItems(user.Id));
             }
@@ -38,16 +38,25 @@ namespace Nocrastination.Controllers
             return StatusCode(403);
         }
 
-        private IActionResult Ok(object v)
-        {
-            throw new NotImplementedException();
-        }
-
         [HttpPost]
         [Route("buy")]
-        public IActionResult BuyItem([FromBody]string itemId)
+        public async Task<IActionResult> BuyItemAsync([FromBody]string itemId)
         {
-            return BadRequest();
+            var user = await _helper.GetUserFromClaims(User.Claims);
+
+            if (user != null && user.IsChild)
+            {
+                var result = _purchaseSrv.BuyItem(user.Id, itemId);
+
+                if (result.Success)
+                {
+                    return Ok(result);
+                }
+
+                return BadRequest(result);
+            }
+
+            return StatusCode(403);
         }
     }
 }
