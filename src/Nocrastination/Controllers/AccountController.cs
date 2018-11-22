@@ -13,25 +13,28 @@ using Nocrastination.Settings;
 
 namespace Nocrastination.Controllers
 {
-	[Route("api/register")]
+	[Route("api/account")]
 	public class AccountController : Controller
 	{
 		private IAccountService _accSrv;
 		private IClaimsHelper _helper;
 		private IdentityServerTools _identityServer;
+		private IUserService _userSrv;
 
 		public AccountController
 				(IAccountService accSrv,
 				IClaimsHelper helper,
-				IdentityServerTools identityServer)
+				IdentityServerTools identityServer,
+				IUserService userSrv)
 		{
 			_accSrv = accSrv;
 			_helper = helper;
 			_identityServer = identityServer;
+			_userSrv = userSrv;
 		}
 
-		// POST api/register
-		[HttpPost]
+		// POST api/account/register
+		[HttpPost("register")]
 		public async Task<IActionResult> RegisterParent([FromBody] RegisterUserDTO user)
 		{
 			var result = await _accSrv.Register(user);
@@ -50,14 +53,47 @@ namespace Nocrastination.Controllers
 			return BadRequest(result);
 		}
 
-		[HttpGet("test")]
 		[Authorize]
-		public IActionResult Test()
+		[HttpGet("user")]
+		public async Task<IActionResult> GetUser()
 		{
-			return Ok("yes");
+			var user = await _helper.GetUserFromClaims(User.Claims);
+
+			return Ok(new AppUser()
+			{
+				Age = user.Age,
+				UserName = user.UserName,
+				FullName = user.FullName,
+				Sex = user.Sex,
+				IsChild = user.IsChild
+			});
+
 		}
 
-		// POST api/register/child
+		[Authorize]
+		[HttpGet("child")]
+		public async Task<IActionResult> GetChild()
+		{
+			var user = await _helper.GetUserFromClaims(User.Claims);
+
+			if (user.IsChild)
+			{
+				return StatusCode(403, "Only parents can get children information");
+			}
+
+			var childUser = _userSrv.FindChildByParentId(user.Id);
+			return Ok(new RegisterChildDTO()
+			{
+				Age = childUser.Age,
+				FullName = childUser.FullName,
+				Sex = childUser.Sex,
+				UserName = childUser.UserName,
+				ParentId = childUser.ParentId
+			});
+			
+		}
+
+		// POST api/account/child
 		[Authorize]
 		[HttpPost("child")]
 		public async Task<IActionResult> RegisterChild([FromBody] RegisterChildDTO child)

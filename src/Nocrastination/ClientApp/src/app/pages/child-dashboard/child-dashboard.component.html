@@ -1,3 +1,34 @@
-<p>
-  child-dashboard works!
-</p>
+<div class='full-height main-background d-flex flex-row'>
+        <div class="bg-warning d-flex flex-column left-column col-3 col-sm-4 justify-content-around align-items-center">
+            <div class='h2 text-center'>
+                <div class="comic-font"> My Score</div>
+                <div>Score</div>
+            </div>
+    
+            <div class='w-100'>
+                <img class='img-fluid w-100' src="/assets/ava.png" alt="Child avatar">
+            </div>
+            <div class='h2 comic-font text-center'>
+                <div class='h2 text-center'>{{userSvc.name}}</div>
+                <div class='h4'>Upcoming task: <label class="text-danger">{{latestTask.name}}</label></div>
+            </div>
+    
+            <div>
+                <button [routerLink]="['/view-schedule']" class='col btn'>My Schedule</button>
+                <button (click)="logout()" class='col btn mt-4'>Logout</button>
+            </div>
+        </div>
+    
+        <div class='d-flex flex-1 flex-column'>
+                <div class='empty-space align-items-center c'>
+                    <button class='btn offset-7' [routerLink]="['/store']"> Store</button>
+                </div>
+                <div class='flex-1'>
+
+                </div>
+                <div class='empty-space align-items-center col'>
+                        <button [routerLink]="['/wardrobe']" class='btn offset-7'>My Wardrobe</button>
+                </div>
+        </div>
+    </div>
+    

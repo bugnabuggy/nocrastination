@@ -8,6 +8,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NocrastinationHttpInterceptor } from './interceptors/nocrastination-http.interceptor';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 
 import { AppComponent } from './app.component';
 
@@ -27,6 +30,10 @@ import { MODULE_COMPONENTS, MODULE_SERVICES, MATERIAL_DESIGN } from './moduleExp
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    })
   ],
   providers: [
     MODULE_SERVICES,

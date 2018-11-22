@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "~angular-calendar/css/angular-calendar.css";
 
 html{
     min-height: 100%;
@@ -15,6 +16,23 @@ body{
 
 .flex-1{
     flex: 1;
+}
+
+.no-list {
+    list-style: none;
+}
+
+.font-18{
+    font-size: 18px !important;
+}
+
+.bold-red {
+    color: red;
+    font-weight: bold;
+}
+
+.zoom2 {
+    transform: scale(1.8);
 }
 
 .main-background{
@@ -46,11 +64,11 @@ body{
 }
 
 .comic-font {
-    font-family: "Comic Sans MS", "Comic Sans";
+    font-family: "Comic Sans MS", "Comic Sans" !important;
 }
 
 .spacer {
-    padding: 20px 0;
+    padding: 15px 0;
 }
 
 .font-bold {
@@ -95,3 +113,6 @@ body{
     color: #fff;
 }
  
+.left-column {
+    min-width: 300px;
+}

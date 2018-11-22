@@ -45,7 +45,7 @@ import { AccountCreationChildPageComponent,
          ViewSchedulePageComponent} from './pages/index';
 
 import {
-        TaskEditorComponent
+        TaskEditorComponent, TaskCheckerComponent
  } from './components';
 
 import { SecurityService,
@@ -105,7 +105,8 @@ const MODULE_COMPONENTS = [
     CheckOffPageComponent,
     ViewSchedulePageComponent,
 
-    TaskEditorComponent
+    TaskEditorComponent,
+    TaskCheckerComponent
 ];
 
 const MODULE_SERVICES = [

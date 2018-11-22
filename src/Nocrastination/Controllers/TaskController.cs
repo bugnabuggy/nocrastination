@@ -105,7 +105,7 @@ namespace Nocrastination.Controllers
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
-            if (!user.IsChild)
+            if (user.IsChild)
             {
                 return StatusCode(403, "You have no rights to do this.");
             }

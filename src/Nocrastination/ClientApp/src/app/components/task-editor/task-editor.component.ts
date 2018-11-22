@@ -16,7 +16,7 @@ export class TaskEditorComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSave() {
+  onSave() {    
     this.save.emit(this.task);
   }
 

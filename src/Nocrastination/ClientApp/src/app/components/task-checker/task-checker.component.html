@@ -1,0 +1,12 @@
+<li class='container py-1'>
+  <div class='row'>
+  <div class="form-check col" 
+      (click)="onSave()">
+        <input type="checkbox" class="form-check-input zoom2" [checked]="task.isFinished">
+        <label class="ml-2 form-check-label font-18 text-secondary" >{{task.name}} {{duration()}}</label>
+      </div>
+      <div class='col-xs-4 col-sm-3 col-lg-2 font-18 bold-red' >
+        {{calculatePoints()}}
+      </div>
+    </div>  
+</li>

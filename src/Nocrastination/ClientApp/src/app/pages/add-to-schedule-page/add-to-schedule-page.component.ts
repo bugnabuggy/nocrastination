@@ -9,8 +9,6 @@ import { TaskContract } from '../../contracts/task-contract';
 })
 export class AddToSchedulePageComponent implements OnInit {
   tasks: TaskContract[] = [];
-  task: TaskContract = { name: '' };
-
 
   constructor(
     private schedulerSvc: SchedulerService,
@@ -41,7 +39,8 @@ export class AddToSchedulePageComponent implements OnInit {
       this.schedulerSvc.save(task)
         .subscribe(
           val => {
-            debugger;
+            const index = this.tasks.findIndex(x => x === task);
+            this.tasks[index] = val;
             console.log('task chaged ' + task.name);
           },
           err => {
@@ -55,7 +54,6 @@ export class AddToSchedulePageComponent implements OnInit {
     this.schedulerSvc.delete(task)
       .subscribe(
         val => {
-          debugger;
           const index = this.tasks.findIndex(x => x === task);
           this.tasks.splice(index, 1);
         }

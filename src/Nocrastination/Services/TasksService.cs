@@ -60,19 +60,26 @@ namespace Nocrastination.Services
                 task = data.FirstOrDefault(x => x.EndDate >= now);
             }
 
+	        List<TaskDTO> tasks = new List<TaskDTO>();
+
+			if (task != null)
+			{
+				tasks.Add(new TaskDTO()
+				{
+					Id = task.Id,
+					Name = task.Name,
+					StartDate = task.StartDate,
+					EndDate = task.EndDate,
+					IsFinished = task.IsFinished
+				});
+			}
+
             return new OperationResult<TaskDTO>()
             {
                 Success = true,
                 Messages = new[] { "You have following lists." },
-                Data = new[]{ new TaskDTO()
-                {
-                    Id = task.Id,
-                    Name = task.Name,
-                    StartDate = task.StartDate,
-                    EndDate = task.EndDate,
-                    IsFinished = task.IsFinished
-                }}
-            };
+                Data = tasks
+			};
         }
 
         public OperationResult<Tasks> AddTasks(string userId, TaskToManipulateDTO item)
@@ -182,10 +189,10 @@ namespace Nocrastination.Services
                 return false;
             }
 
-            var crossedItem = _tasksRepo.Get(x => !(item.StartDate < x.EndDate &&
-                                                    item.EndDate > x.StartDate)).FirstOrDefault();
+            var hasCrossItems = _tasksRepo.Data.Any(x => (item.StartDate < x.EndDate &&
+                                                    item.EndDate > x.StartDate));
 
-            if (crossedItem != null)
+            if (hasCrossItems)
             {
                 return false;
             }
