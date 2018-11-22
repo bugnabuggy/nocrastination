@@ -210,7 +210,7 @@ namespace Nocrastination.Data.Migrations
                     b.ToTable("Purchases");
                 });
 
-            modelBuilder.Entity("Nocrastination.Core.Entities.Store", b =>
+            modelBuilder.Entity("Nocrastination.Core.Entities.StoreItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();

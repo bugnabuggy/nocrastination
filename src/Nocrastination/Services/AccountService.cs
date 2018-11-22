@@ -13,10 +13,14 @@ namespace Nocrastination.Services
     public class AccountService : IAccountService
     {
         private UserManager<AppUser> _userManager;
+        private IPurchaseService _purchaseService;
 
-        public AccountService(UserManager<AppUser> userManager)
+        public AccountService(UserManager<AppUser> userManager,
+                IPurchaseService purchaseService
+        )
         {
             _userManager = userManager;
+            _purchaseService = purchaseService;
         }
 
         public async Task<OperationResult> Register(RegisterUserDTO regUser)
@@ -83,6 +87,8 @@ namespace Nocrastination.Services
 
             if (result.Succeeded)
             {
+                _purchaseService.SetInitialItem(newUser.Id);
+
                 return new OperationResult()
                 {
                     Messages = new[] { "User was successfully registered." },

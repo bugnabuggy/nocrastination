@@ -7,21 +7,21 @@ import { ChildRegistration } from '../contracts/child-registration';
 @Injectable()
 export class RegistrationService {
 
-  constructor(
-    private http: HttpClient,
-  ) { }
+	constructor(
+		private http: HttpClient,
+	) { }
 
-  registerParent(parent: ParentRegistration) {
-    return this.http.post(
-      Endpoints.api.registration.registerParent,
-      parent
-    );
-  }
+	registerParent(parent: ParentRegistration) {
+		return this.http.post(
+			Endpoints.api.registration.registerParent,
+			parent
+		);
+	}
 
-  registerChild(child: ChildRegistration) {
-    return this.http.post(
-      Endpoints.api.registration.registerChild,
-      child
-    );
-  }
+	registerChild(child: ChildRegistration) {
+		return this.http.post(
+			Endpoints.api.registration.registerChild,
+			child
+		);
+	}
 }

@@ -20,7 +20,14 @@ class Endpoints {
 		get task() { return Endpoints.baseApiUrl + 'tasks'; },
 		get latestTask() { return Endpoints.baseApiUrl + 'tasks/latest'; },
 		get child() { return Endpoints.baseApiUrl + 'account/child'; },
-		get user() { return Endpoints.baseApiUrl + 'account/user'; }
+		get user() { return Endpoints.baseApiUrl + 'account/user'; },
+
+		get childStatus() { return Endpoints.baseApiUrl + 'item/status'; },
+
+		store : {
+			get items() {return Endpoints.baseApiUrl + 'store';  }
+		}
+
 	};
 }
 

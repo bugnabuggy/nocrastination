@@ -10,19 +10,19 @@ namespace Nocrastination.Services
 {
     public class StoreService : IStoreService
     {
-        private IRepository<Store> _storeRepo;
+        private IRepository<StoreItem> _storeRepo;
 
-        private StoreService(IRepository<Store> storeRepo)
+        public StoreService(IRepository<StoreItem> storeRepo)
         {
             _storeRepo = storeRepo;
         }
 
-        public IEnumerable<Store> GetAllItemsInStore()
+        public IEnumerable<StoreItem> GetAllItemsInStore()
         {
             return _storeRepo.Data;
         }
 
-        public bool IsStoreItemExists(string itemId, out Store item)
+        public bool IsStoreItemExists(string itemId, out StoreItem item)
         {
             item = null;
 

@@ -18,7 +18,7 @@ namespace Nocrastination
         {
             services.AddScoped<IRepository<AppUser>, DbRepository<AppUser>>();
             services.AddScoped<IRepository<Tasks>, DbRepository<Tasks>>();
-            services.AddScoped<IRepository<Store>, DbRepository<Store>>();
+            services.AddScoped<IRepository<StoreItem>, DbRepository<StoreItem>>();
             services.AddScoped<IRepository<Purchase>, DbRepository<Purchase>>();
 
             services.AddScoped<IAccountService, AccountService>();
@@ -36,11 +36,11 @@ namespace Nocrastination
 
             foreach (var item in storeItems)
             {
-                var storedItem = ctx.Stores.FirstOrDefault(x => x.Name == item.Name);
+                var storedItem = ctx.StoreItems.FirstOrDefault(x => x.Name == item.Name);
 
                 if (storedItem == null)
                 {
-                    ctx.Stores.Add(new Store()
+                    ctx.StoreItems.Add(new StoreItem()
                     {
                         Name = item.Name,
                         Picture = item.Picture,

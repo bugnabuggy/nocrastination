@@ -39,13 +39,11 @@ export class LogInPageComponent implements OnInit {
 			this.userSvc.login(this.data.username, this.data.password)
 				.pipe(
 					flatMap(x => {
-						debugger;
 						return this.userSvc.getUser();
 					})
 				)
 				.subscribe(
 					val => {
-						debugger;
 						if (this.type == 'child') {
 							this.router.navigate(['/child-dashboard']);
 						} else {

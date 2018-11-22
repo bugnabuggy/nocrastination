@@ -9,6 +9,6 @@ namespace Nocrastination.Models.DTO
     {
         public int Score { get; set; }
         public string ItemName { get; set; }
-        public string ItemImageURL { get; set; }
+        public string ItemImageUrl { get; set; }
     }
 }

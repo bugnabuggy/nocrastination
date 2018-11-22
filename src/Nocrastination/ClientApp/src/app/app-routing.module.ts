@@ -10,7 +10,9 @@ import {
 	LoginSelectPageComponent,
 	AddToSchedulePageComponent,
 	CheckOffPageComponent,
-	ViewSchedulePageComponent
+	ViewSchedulePageComponent,
+	StorePageComponent,
+	WardrobePageComponent
 } from './pages/index';
 import { SecurityService, UserService } from './services';
 
@@ -28,12 +30,11 @@ const routes: Routes = [
 	{ path: 'add-to-shedule', component: AddToSchedulePageComponent, canActivate: [SecurityService, UserService] },
 	{ path: 'check-off', component: CheckOffPageComponent, canActivate: [SecurityService, UserService] },
 	{ path: 'view-schedule', component: ViewSchedulePageComponent, canActivate: [SecurityService] },
+	{ path: 'store', component: StorePageComponent, canActivate: [SecurityService] },
+	{ path: 'wardrobe', component: WardrobePageComponent, canActivate: [SecurityService] },
 
-	// { path: 'infopole', component: InfopoleComponent,  },
-	// { path: 'infopole/:key/:reportId', component: InfopoleComponent },
-	// { path: 'infopole/:key', component: InfopoleComponent,      },
 
-	// { path: '**',  component: NotFoundComponent  },
+	// { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

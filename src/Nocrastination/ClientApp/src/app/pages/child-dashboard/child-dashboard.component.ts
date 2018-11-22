@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SecurityService, UserService, SchedulerService } from '../../services';
 import { Router } from '@angular/router';
 import { TaskContract } from '../../contracts/task-contract';
+import { ChildStatusContract } from '../../contracts/child-status-contract';
 
 @Component({
 	selector: 'app-child-dashboard',
@@ -11,6 +12,7 @@ import { TaskContract } from '../../contracts/task-contract';
 export class ChildDashboardComponent implements OnInit {
 	latestTask: TaskContract = {name: ''};
 	name: string = '';
+	status: ChildStatusContract = {score: 0, itemImageUrl: '', itemName: ''};
 
 	constructor(
 		public userSvc: UserService,
@@ -23,6 +25,11 @@ export class ChildDashboardComponent implements OnInit {
 		.subscribe((val: TaskContract) => {
 			this.latestTask = val;
 		});
+
+		this.userSvc.getStatus()
+			.subscribe( val => {
+				this.status = val;
+			});
 	}
 
 	logout() {

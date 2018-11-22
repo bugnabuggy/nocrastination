@@ -9,4 +9,5 @@ export * from './login-select-page/login-select-page.component';
 export * from './add-to-schedule-page/add-to-schedule-page.component';
 export * from './view-schedule-page/view-schedule-page.component';
 export * from './check-off-page/check-off-page.component';
-
+export * from './store-page/store-page.component';
+export * from './wardrobe-page/wardrobe-page.component';

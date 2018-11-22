@@ -17,31 +17,31 @@ import { AppComponent } from './app.component';
 import { MODULE_COMPONENTS, MODULE_SERVICES, MATERIAL_DESIGN } from './moduleExports';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MODULE_COMPONENTS,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    FormsModule,
-    MATERIAL_DESIGN,
-    BrowserAnimationsModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory
-    })
-  ],
-  providers: [
-    MODULE_SERVICES,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: NocrastinationHttpInterceptor,
-      multi: true
-    }],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		MODULE_COMPONENTS,
+	],
+	imports: [
+		BrowserModule,
+		HttpClientModule,
+		AppRoutingModule,
+		FormsModule,
+		MATERIAL_DESIGN,
+		BrowserAnimationsModule,
+		OwlDateTimeModule,
+		OwlNativeDateTimeModule,
+		CalendarModule.forRoot({
+			provide: DateAdapter,
+			useFactory: adapterFactory
+		})
+	],
+	providers: [
+		MODULE_SERVICES,
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: NocrastinationHttpInterceptor,
+			multi: true
+		}],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }

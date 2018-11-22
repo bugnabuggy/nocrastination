@@ -10,8 +10,8 @@ using Nocrastination.Data;
 namespace Nocrastination.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181122133930_PurchaseGetIsSelectedField")]
-    partial class PurchaseGetIsSelectedField
+    [Migration("20181122172010_Store-Baseclass-Renamed")]
+    partial class StoreBaseclassRenamed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -225,7 +225,7 @@ namespace Nocrastination.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores");
+                    b.ToTable("StoreItems");
                 });
 
             modelBuilder.Entity("Nocrastination.Core.Entities.Tasks", b =>

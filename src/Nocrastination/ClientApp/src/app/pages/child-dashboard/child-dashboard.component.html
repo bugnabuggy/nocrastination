@@ -2,7 +2,7 @@
         <div class="bg-warning d-flex flex-column left-column col-3 col-sm-4 justify-content-around align-items-center">
             <div class='h2 text-center'>
                 <div class="comic-font"> My Score</div>
-                <div>Score</div>
+                <div>{{status.score}}</div>
             </div>
     
             <div class='w-100'>
@@ -20,13 +20,16 @@
         </div>
     
         <div class='d-flex flex-1 flex-column'>
-                <div class='empty-space align-items-center c'>
+                <div class='empty-space d-flex align-items-center justify-content-around'>
                     <button class='btn offset-7' [routerLink]="['/store']"> Store</button>
                 </div>
-                <div class='flex-1'>
-
+                <div class='flex-1 d-flex align-items-center justify-content-around'>
+                    <img 
+                        *ngIf="status.itemImageUrl"
+                        [src]="status.itemImageUrl" 
+                        alt="Current outfit">
                 </div>
-                <div class='empty-space align-items-center col'>
+                <div class='empty-space d-flex align-items-center justify-content-around'>
                         <button [routerLink]="['/wardrobe']" class='btn offset-7'>My Wardrobe</button>
                 </div>
         </div>

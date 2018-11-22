@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nocrastination.Core.Entities
 {
-    public class Store
+    public class StoreItem
     {
         public Guid Id { get; set; }
         public string Picture { get; set; }

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Endpoints } from '../enums/Endpoints';
 import { Observable } from 'rxjs';
 import { share, flatMap } from 'rxjs/operators';
+import { ChildStatusContract } from '../contracts/child-status-contract';
 
 @Injectable()
 export class UserService {
@@ -36,9 +37,9 @@ export class UserService {
 	}
 
 	login(login, password) {
-		const observable = this.securitySvc.getToken(login, password);
-
-		observable.pipe(
+		const observable = this.securitySvc.getToken(login, password)
+		.pipe(
+			share(),
 			flatMap(x => {
 				return this.getUser();
 			})
@@ -73,5 +74,9 @@ export class UserService {
 		});
 
 		return observable;
+	}
+
+	getStatus(): Observable<ChildStatusContract> {
+		return this.http.get<ChildStatusContract>(Endpoints.api.childStatus);
 	}
 }

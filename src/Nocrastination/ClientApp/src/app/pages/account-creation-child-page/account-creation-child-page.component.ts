@@ -4,37 +4,37 @@ import { NotificationService, RegistrationService, SecurityService } from '../..
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-account-creation-child-page',
-  templateUrl: './account-creation-child-page.component.html'
+	selector: 'app-account-creation-child-page',
+	templateUrl: './account-creation-child-page.component.html'
 })
 export class AccountCreationChildPageComponent {
-    child: ChildRegistration = {};
-    labelPosition: any;
+	child: ChildRegistration = {};
+	labelPosition: any;
 
-    constructor(
-      private notification: NotificationService,
-      private regSvc: RegistrationService,
-      private router: Router,
-      private securitySvc: SecurityService
-    ) {}
+	constructor(
+		private notification: NotificationService,
+		private regSvc: RegistrationService,
+		private router: Router,
+		private securitySvc: SecurityService
+	) { }
 
-    createAccount (form) {
-      if (form.valid &&
-          this.child.age > 0 &&
-          this.child.password == this.child.confirmPassword) {
-            this.regSvc.registerChild(this.child)
-            .subscribe(
-              (val) => {
-                this.router.navigate(['/parent-dashboard']);
-              },
-              err => {
-                this.notification.error('Error registering child!');
-              }
-            );
+	createAccount(form) {
+		if (form.valid &&
+			this.child.age > 0 &&
+			this.child.password == this.child.confirmPassword) {
+			this.regSvc.registerChild(this.child)
+				.subscribe(
+					(val) => {
+						this.router.navigate(['/parent-dashboard']);
+					},
+					err => {
+						this.notification.error('Error registering child!');
+					}
+				);
 
-      } else {
-        this.notification.error('Fill all form fields with right values');
-      }
-      console.log(this.child);
-    }
+		} else {
+			this.notification.error('Fill all form fields with right values');
+		}
+		console.log(this.child);
+	}
 }

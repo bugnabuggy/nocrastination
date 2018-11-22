@@ -79,11 +79,12 @@ export class ViewSchedulePageComponent implements OnInit {
 	getEnd(tasks: TaskContract[]): number {
 		let max = 1;
 		tasks.forEach(x => {
-			max = x.startDate.getHours() > max
-			? x.startDate.getHours()
+			max = x.endDate.getHours() > max
+			? x.endDate.getHours()
 			: max;
 		});
-		return max;
+		return max ;
+
 	}
 
 	mapToEvents(tasks: TaskContract[]): CalendarEvent[] {

@@ -93,7 +93,7 @@ namespace Nocrastination.Services
 
                 var messages = new List<string>() { };
 
-	            if (!IsValid(item))
+	            if (!IsValid(item, userId))
 	            {
 		            messages.Add($"Task with name = [{item.Name}], " +
 		                         $"start_time = [{item.StartDate}] and " +
@@ -182,7 +182,7 @@ namespace Nocrastination.Services
             };
         }
 
-        private bool IsValid(TaskToManipulateDTO item)
+        private bool IsValid(TaskToManipulateDTO item, string parentId)
         {
             if (item.StartDate >= item.EndDate)
             {
@@ -190,7 +190,7 @@ namespace Nocrastination.Services
             }
 
             var hasCrossItems = _tasksRepo.Data.Any(x => (item.StartDate < x.EndDate &&
-                                                    item.EndDate > x.StartDate));
+                                                    item.EndDate > x.StartDate) && x.ParentId.Equals(parentId));
 
             if (hasCrossItems)
             {

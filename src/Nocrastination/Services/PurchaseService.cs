@@ -33,15 +33,24 @@ namespace Nocrastination.Services
 
         public UserStatusDTO GetStatus(string childId)
         {
-            var selectedItem = GetItems(childId).FirstOrDefault(x => x.IsSelected == true);
+            var selectedItem = GetItems(childId).FirstOrDefault(x => x.IsSelected);
             var score = GetChildsEarnedPoints(childId) - GetChildsSpentPoints(childId);
             var item = _storeSrv.GetAllItemsInStore().FirstOrDefault(x => x.Id == selectedItem.Id);
+
+            if (item == null)
+            {
+                item = new StoreItem()
+                {
+                    Name = "default",
+                    Picture = "/store-items/item0.png"
+                };
+            }
 
             return new UserStatusDTO()
             {
                 Score = score,
                 ItemName = item.Name,
-                ItemImageURL = item.Picture
+                ItemImageUrl = item.Picture
             };
         }
 
@@ -103,7 +112,7 @@ namespace Nocrastination.Services
                     return new OperationResult<Purchase>()
                     {
                         Success = true,
-                        Messages = new[] { "You don`t have enough points." },
+                        Messages = new[] { "Item is yours." },
                         Data = new[]{ _purchaseRepo.Add(new Purchase()
                         {
                             ChildId = childId,
@@ -148,6 +157,22 @@ namespace Nocrastination.Services
                 .Sum(x => x.Points);
 
             return result;
+        }
+
+        public OperationResult SetInitialItem(string childId)
+        {
+            _purchaseRepo.Add(new Purchase()
+            {
+                ChildId = childId,
+                ItemId = Guid.Empty,
+                Points = 0,
+                IsSelected = true
+            });
+
+            return new OperationResult()
+            {
+                Success = true,
+            };
         }
     }
 }

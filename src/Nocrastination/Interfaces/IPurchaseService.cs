@@ -14,5 +14,6 @@ namespace Nocrastination.Interfaces
         OperationResult<Purchase> BuyItem(string childId, string itemId);
         OperationResult SelectItem(string childId, string itemId);
         UserStatusDTO GetStatus(string childId);
+        OperationResult SetInitialItem(string childId);
     }
 }
