@@ -25,7 +25,20 @@ namespace Nocrastination.Controllers
         }
 
         [HttpGet]
-        [Route("user")]
+        [Route("status")]
+        public async Task<IActionResult> GetChildStatusAsync()
+        {
+            var user = await _helper.GetUserFromClaims(User.Claims);
+
+            if (user != null && user.IsChild)
+            {
+                return Ok(_purchaseSrv.GetStatus(user.Id));
+            }
+
+            return StatusCode(403);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetUsersItem()
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
@@ -38,15 +51,15 @@ namespace Nocrastination.Controllers
             return StatusCode(403);
         }
 
-        [HttpPost]
-        [Route("buy")]
-        public async Task<IActionResult> BuyItemAsync([FromBody]string itemId)
+        [HttpPut]
+        [Route("{itemId}")]
+        public async Task<IActionResult> SelectItem(string itemId)
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
             if (user != null && user.IsChild)
             {
-                var result = _purchaseSrv.BuyItem(user.Id, itemId);
+                var result = _purchaseSrv.SelectItem(user.Id, itemId);
 
                 if (result.Success)
                 {

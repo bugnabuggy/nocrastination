@@ -11,5 +11,6 @@ namespace Nocrastination.Core.Entities
         public int Points { get; set; }
         public string ChildId { get; set; }
         public Guid ItemId { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

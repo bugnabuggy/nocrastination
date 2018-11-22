@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Nocrastination.Data;
 using Nocrastination.Models;
+using Nocrastination.Models.DTO;
 using Nocrastination.Settings;
 
 namespace Nocrastination.Services
@@ -30,9 +31,62 @@ namespace Nocrastination.Services
             _cfg = cfg;
         }
 
+        public UserStatusDTO GetStatus(string childId)
+        {
+            var selectedItem = GetItems(childId).FirstOrDefault(x => x.IsSelected == true);
+            var score = GetChildsEarnedPoints(childId) - GetChildsSpentPoints(childId);
+            var item = _storeSrv.GetAllItemsInStore().FirstOrDefault(x => x.Id == selectedItem.Id);
+
+            return new UserStatusDTO()
+            {
+                Score = score,
+                ItemName = item.Name,
+                ItemImageURL = item.Picture
+            };
+        }
+
         public IEnumerable<Purchase> GetItems(string childId)
         {
             return _purchaseRepo.Get(x => x.ChildId == childId);
+        }
+
+        public OperationResult SelectItem(string childId, string itemId)
+        {
+            var isItemId = Guid.TryParse(itemId, out var id);
+
+            if (isItemId)
+            {
+                var item = _purchaseRepo.Get(x => x.ChildId == childId &&
+                                                  x.ItemId == id).FirstOrDefault();
+
+                if (item != null)
+                {
+                    var chosenItem = _purchaseRepo.Get(x => x.ChildId == childId &&
+                                                            x.IsSelected == true).FirstOrDefault();
+
+                    item.IsSelected = true;
+
+                    _purchaseRepo.Update(item);
+
+                    if (chosenItem != null)
+                    {
+                        chosenItem.IsSelected = false;
+
+                        _purchaseRepo.Update(chosenItem);
+                    }
+
+                    return new OperationResult()
+                    {
+                        Success = true,
+                        Messages = new[] { "Selected item was successfully changed." }
+                    };
+                }
+            }
+
+            return new OperationResult()
+            {
+                Messages = new[] { "Item ID is invalid." }
+            };
         }
 
         public OperationResult<Purchase> BuyItem(string childId, string itemId)
@@ -50,7 +104,7 @@ namespace Nocrastination.Services
                     {
                         Success = true,
                         Messages = new[] { "You don`t have enough points." },
-                        Data = new []{ _purchaseRepo.Add(new Purchase()
+                        Data = new[]{ _purchaseRepo.Add(new Purchase()
                         {
                             ChildId = childId,
                             ItemId = item.Id,
