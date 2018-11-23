@@ -10,7 +10,7 @@ namespace Nocrastination.Interfaces
 {
     public interface IPurchaseService
     {
-        IEnumerable<Purchase> GetItems(string childId);
+        IEnumerable<OutfitDTO> GetItems(string childId);
         OperationResult<Purchase> BuyItem(string childId, string itemId);
         OperationResult SelectItem(string childId, string itemId);
         UserStatusDTO GetStatus(string childId);

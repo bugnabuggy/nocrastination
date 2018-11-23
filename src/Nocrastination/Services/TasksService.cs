@@ -13,11 +13,11 @@ namespace Nocrastination.Services
 {
     public class TasksService : ITasksService
     {
-        private IRepository<Tasks> _tasksRepo;
+        private IRepository<ChildTask> _tasksRepo;
         private IUserService _userSrv;
 
         public TasksService
-            (IRepository<Tasks> tasksRepo,
+            (IRepository<ChildTask> tasksRepo,
             IUserService userSrv)
         {
             _tasksRepo = tasksRepo;
@@ -82,14 +82,14 @@ namespace Nocrastination.Services
 			};
         }
 
-        public OperationResult<Tasks> AddTasks(string userId, TaskToManipulateDTO item)
+        public OperationResult<ChildTask> AddTasks(string userId, TaskToManipulateDTO item)
         {
             var childUser = _userSrv.FindChildByParentId(userId);
 	        var success = true;
 
             if (childUser != null)
             {
-                var tasks = new List<Tasks>() { };
+                var tasks = new List<ChildTask>() { };
 
                 var messages = new List<string>() { };
 
@@ -102,7 +102,7 @@ namespace Nocrastination.Services
 		            success = false;
 
 	            } else {
-		            tasks.Add(new Tasks()
+		            tasks.Add(new ChildTask()
 		            {
 			            Name = item.Name,
 			            StartDate = (DateTime)item.StartDate,
@@ -112,7 +112,7 @@ namespace Nocrastination.Services
 		            });
 				}
 
-				return new OperationResult<Tasks>()
+				return new OperationResult<ChildTask>()
 				{
 					Success = success,
 					Messages = new[] { "Following tasks were added successfully." },
@@ -120,25 +120,25 @@ namespace Nocrastination.Services
 				};
 			}
 
-			return new OperationResult<Tasks>()
+			return new OperationResult<ChildTask>()
             {
                 Messages = new[] { "You don`t have registered children." }
             };
         }
 
-        public OperationResult<Tasks> EditTask(string userId, string taskId, TaskToManipulateDTO item)
+        public OperationResult<ChildTask> EditTask(string userId, string taskId, TaskToManipulateDTO item)
         {
             if (!IsTaskExists(taskId, out var task))
             {
-                return new OperationResult<Tasks>()
+                return new OperationResult<ChildTask>()
                 {
-                    Messages = new[] { $"There is no task with id = [{taskId}]" }
+                    Messages = new[] { $"There is no childTask with id = [{taskId}]" }
                 };
             }
 
             if (task.ParentId != userId)
             {
-                return new OperationResult<Tasks>()
+                return new OperationResult<ChildTask>()
                 {
                     Messages = new[] { "You have no right to do this" }
                 };
@@ -149,7 +149,7 @@ namespace Nocrastination.Services
             task.StartDate = item.StartDate ?? task.StartDate;
             task.EndDate = item.EndDate ?? task.EndDate;
 
-            return new OperationResult<Tasks>()
+            return new OperationResult<ChildTask>()
             {
                 Success = true,
                 Messages = new[] { "Task was updated successfully." },
@@ -163,12 +163,12 @@ namespace Nocrastination.Services
 
 	        if (!IsTaskExists(taskId, out var task))
 	        {
-		        messages.Add($"There is no task with id = [{taskId}]");
+		        messages.Add($"There is no childTask with id = [{taskId}]");
 	        }
 
 	        if (task.ParentId != userId)
 	        {
-		        messages.Add($"You have no right to remove task with id = [{taskId}]");
+		        messages.Add($"You have no right to remove childTask with id = [{taskId}]");
 	        }
 
 	        _tasksRepo.Delete(task);
@@ -200,9 +200,9 @@ namespace Nocrastination.Services
             return true;
         }
 
-        private IQueryable<Tasks> GetTasksData(string userId, bool isChild)
+        private IQueryable<ChildTask> GetTasksData(string userId, bool isChild)
         {
-            var data = new Tasks[] { }.AsQueryable();
+            var data = new ChildTask[] { }.AsQueryable();
 
             if (isChild)
             {
@@ -216,15 +216,15 @@ namespace Nocrastination.Services
             return data;
         }
 
-        private bool IsTaskExists(string taskId, out Tasks task)
+        private bool IsTaskExists(string taskId, out ChildTask childTask)
         {
-            task = new Tasks();
+            childTask = new ChildTask();
 
             var result = Guid.TryParse(taskId, out var item);
 
             if (result)
             {
-                task = _tasksRepo.Data.FirstOrDefault(x => x.Id == item);
+                childTask = _tasksRepo.Data.FirstOrDefault(x => x.Id == item);
                 return true;
             }
 

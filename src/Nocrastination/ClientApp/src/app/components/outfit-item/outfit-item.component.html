@@ -1,0 +1,16 @@
+<div class='d-flex flex-column justify-content-center align-items-center mw-300'>
+    <div>
+        <img
+         class="tile-img"
+         [src]="item.imageUrl" 
+         alt="item.name">
+    </div>
+    <div class='text-center'>
+      <h3 class='h3 comic-font'>{{item.name}}</h3>
+      <button
+        class='btn'
+        (click)="onSelect()">
+        Select
+      </button>
+    </div>
+  </div>

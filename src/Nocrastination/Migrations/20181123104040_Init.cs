@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Nocrastination.Data.Migrations
+namespace Nocrastination.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,35 +54,7 @@ namespace Nocrastination.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Purchases",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Points = table.Column<int>(nullable: false),
-                    ChildId = table.Column<string>(nullable: true),
-                    ItemId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stores",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Picture = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Points = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stores", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Taskses",
+                name: "ChildTasks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -95,7 +67,36 @@ namespace Nocrastination.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Taskses", x => x.Id);
+                    table.PrimaryKey("PK_ChildTasks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchases",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Points = table.Column<int>(nullable: false),
+                    ChildId = table.Column<string>(nullable: true),
+                    ItemId = table.Column<Guid>(nullable: false),
+                    IsSelected = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchases", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StoreItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Picture = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Points = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoreItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -262,13 +263,13 @@ namespace Nocrastination.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ChildTasks");
+
+            migrationBuilder.DropTable(
                 name: "Purchases");
 
             migrationBuilder.DropTable(
-                name: "Stores");
-
-            migrationBuilder.DropTable(
-                name: "Taskses");
+                name: "StoreItems");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

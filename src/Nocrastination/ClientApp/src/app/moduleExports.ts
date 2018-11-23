@@ -49,7 +49,7 @@ import {
 } from './pages/index';
 
 import {
-	TaskEditorComponent, TaskCheckerComponent
+	TaskEditorComponent, TaskCheckerComponent, StoreItemComponent, OutfitItemComponent
 } from './components';
 
 import {
@@ -114,7 +114,9 @@ const MODULE_COMPONENTS = [
 	TaskEditorComponent,
 	TaskCheckerComponent,
 	StorePageComponent,
-	WardrobePageComponent
+	WardrobePageComponent,
+	StoreItemComponent,
+	OutfitItemComponent,
 ];
 
 const MODULE_SERVICES = [

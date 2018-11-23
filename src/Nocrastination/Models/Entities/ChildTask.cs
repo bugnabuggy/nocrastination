@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nocrastination.Core.Entities
 {
-    public class Tasks
+    public class ChildTask
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

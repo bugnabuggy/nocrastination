@@ -3,4 +3,5 @@ export interface StoreItemContract {
 	picture: string;
 	name: string;
 	points: number;
+	isEnabled?: boolean;
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { switchMap, flatMap } from 'rxjs/operators';
+import { switchMap, flatMap, share } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LoginContract } from '../../contracts/login-contract';
 import { SecurityService, NotificationService, UserService } from '../../services';
@@ -37,11 +37,6 @@ export class LogInPageComponent implements OnInit {
 	login(form) {
 		if (form.valid) {
 			this.userSvc.login(this.data.username, this.data.password)
-				.pipe(
-					flatMap(x => {
-						return this.userSvc.getUser();
-					})
-				)
 				.subscribe(
 					val => {
 						if (this.type == 'child') {

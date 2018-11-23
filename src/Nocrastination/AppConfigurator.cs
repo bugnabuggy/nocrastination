@@ -17,7 +17,7 @@ namespace Nocrastination
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IRepository<AppUser>, DbRepository<AppUser>>();
-            services.AddScoped<IRepository<Tasks>, DbRepository<Tasks>>();
+            services.AddScoped<IRepository<ChildTask>, DbRepository<ChildTask>>();
             services.AddScoped<IRepository<StoreItem>, DbRepository<StoreItem>>();
             services.AddScoped<IRepository<Purchase>, DbRepository<Purchase>>();
 

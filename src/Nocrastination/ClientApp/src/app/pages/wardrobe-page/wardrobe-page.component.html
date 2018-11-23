@@ -1,3 +1,33 @@
-<p>
-  wardrobe-page works!
-</p>
+<div class='full-height main-background d-flex flex-row'>
+    <div class='d-flex flex-column col-sm-5 col-md-3 justify-content-between align-items-center'>
+      <div class="empty-space d-flex flex-column justify-content-end">
+          <label class='h3 comic-font '>Current Outfit:</label>
+      </div>
+      
+      <div>
+        <div class='d-flex justify-content-between align-items-center'>
+            <img 
+              class='tile-img'
+              *ngIf="status.itemImageUrl"
+              [src]="status.itemImageUrl" 
+              alt="Current outfit">
+        </div>
+      </div>
+      <div class='empty-space' >
+        <button  [routerLink]="['/child-dashboard']" class='btn'>Return home</button>
+      </div>
+    </div>
+    <div class='d-felx flex-1 flex-column'>
+        <div class="empty-space d-flex flex-column justify-content-end">
+            <label class='h3 comic-font '>My outfits:</label>
+        </div>
+        <ul class='row flex-1 no-list m-0'>
+            <li *ngFor="let item of items" class='col-6 d-flex justify-content-center align-items-center'>
+              <app-outfit-item  [item]="item" (select)="select($event)">
+              </app-outfit-item>
+            </li>
+          </ul>
+    </div>
+    
+  
+  </div>

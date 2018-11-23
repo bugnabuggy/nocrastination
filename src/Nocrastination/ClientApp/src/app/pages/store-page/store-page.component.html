@@ -1,7 +1,20 @@
 <div class='full-height main-background d-flex flex-row'>
-  <div class='d-flex justify-content-around align-items-center' >
-      <label>My Score</label>
-      <div></div>
+  <div class='d-flex flex-column col-3 justify-content-between align-items-center'>
+    <div></div>
+    <div>
+      <label class='h3 comic-font'>My Score</label>
+      <div class='h3'>{{status.score ? status.score + ' points' : ''}}</div>
+    </div>
+    <div class='empty-space' >
+      <button  [routerLink]="['/child-dashboard']" class='btn'>Return home</button>
+    </div>
   </div>
-  <div></div>
+
+  <ul class='row flex-1 no-list m-0'>
+    <li *ngFor="let item of items" class='col-6 d-flex justify-content-center align-items-center'>
+      <app-store-item  [item]="item" (buy)="buy($event)">
+      </app-store-item>
+    </li>
+  </ul>
+
 </div>

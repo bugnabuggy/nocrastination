@@ -10,6 +10,7 @@ import { ChildRegistration } from '../../contracts/child-registration';
 })
 export class CheckOffPageComponent implements OnInit {
 	tasks: TaskContract[] = [];
+	totalPoints: number;
 	childName = '';
 	childGender = '';
 
@@ -22,6 +23,7 @@ export class CheckOffPageComponent implements OnInit {
 		this.schedulerSvc.getTasks()
 			.subscribe(val => {
 				this.tasks = val;
+				this.calculatePoints();
 			});
 
 		this.userSvc.getChild().
@@ -32,9 +34,23 @@ export class CheckOffPageComponent implements OnInit {
 	}
 
 	save(task: TaskContract) {
-		this.schedulerSvc.save(task).subscribe(
-			val => { }
-		);
+		task.isFinished = !task.isFinished;
+		this.schedulerSvc.save(task)
+			.subscribe(val => {
+				this.calculatePoints();
+				console.log(`Task ${task.name} marked as ${task.isFinished ? 'finished' : 'not finished'}`)
+			});
+	}
+
+	calculatePoints() {
+		this.totalPoints = 0;
+		this.tasks.forEach(x => {
+			if (!x.isFinished) {
+				return;
+			}
+			const duration = Math.round(((x.endDate as any) - (x.startDate as any)) / 60000);
+			this.totalPoints += duration * 2;
+		});
 	}
 
 }

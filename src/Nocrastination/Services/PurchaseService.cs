@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Nocrastination.Data;
 using Nocrastination.Models;
@@ -12,167 +13,187 @@ using Nocrastination.Settings;
 
 namespace Nocrastination.Services
 {
-    public class PurchaseService : IPurchaseService
-    {
-        private IRepository<Purchase> _purchaseRepo;
-        private IRepository<Tasks> _tasksRepo;
-        private IStoreService _storeSrv;
-        private IConfiguration _cfg;
+	public class PurchaseService : IPurchaseService
+	{
+		private IRepository<Purchase> _purchaseRepo;
+		private IRepository<StoreItem> _storeRepo;
+		private IRepository<ChildTask> _tasksRepo;
+		private IStoreService _storeSrv;
+		private IConfiguration _cfg;
 
-        public PurchaseService
-            (IRepository<Purchase> purchaseRepo,
-            IRepository<Tasks> tasksRepo,
-            IStoreService storeSrv,
-            IConfiguration cfg)
-        {
-            _purchaseRepo = purchaseRepo;
-            _tasksRepo = tasksRepo;
-            _storeSrv = storeSrv;
-            _cfg = cfg;
-        }
+		public PurchaseService
+			(IRepository<Purchase> purchaseRepo,
+			IRepository<ChildTask> tasksRepo,
+			IStoreService storeSrv,
+			IRepository<StoreItem> storeRepo,
+			IConfiguration cfg)
+		{
+			_purchaseRepo = purchaseRepo;
+			_tasksRepo = tasksRepo;
+			_storeRepo = storeRepo;
+			_storeSrv = storeSrv;
+			_cfg = cfg;
+		}
 
-        public UserStatusDTO GetStatus(string childId)
-        {
-            var selectedItem = GetItems(childId).FirstOrDefault(x => x.IsSelected);
-            var score = GetChildsEarnedPoints(childId) - GetChildsSpentPoints(childId);
-            var item = _storeSrv.GetAllItemsInStore().FirstOrDefault(x => x.Id == selectedItem.Id);
+		public UserStatusDTO GetStatus(string childId)
+		{
+			var selectedItem = GetPurchases(childId).FirstOrDefault(x => x.IsSelected);
+			var score = GetChildsEarnedPoints(childId) - GetChildsSpentPoints(childId);
+			var item = _storeSrv.GetAllItemsInStore().FirstOrDefault(x => x.Id == selectedItem.ItemId);
 
-            if (item == null)
-            {
-                item = new StoreItem()
-                {
-                    Name = "default",
-                    Picture = "/store-items/item0.png"
-                };
-            }
+			if (item == null)
+			{
+				item = new StoreItem()
+				{
+					Name = "default",
+					Picture = "/store-items/item0.png"
+				};
+			}
 
-            return new UserStatusDTO()
-            {
-                Score = score,
-                ItemName = item.Name,
-                ItemImageUrl = item.Picture
-            };
-        }
+			return new UserStatusDTO()
+			{
+				Score = score,
+				ItemName = item.Name,
+				ItemImageUrl = item.Picture,
+				PurchaseId = selectedItem.Id
+			};
+		}
 
-        public IEnumerable<Purchase> GetItems(string childId)
-        {
-            return _purchaseRepo.Get(x => x.ChildId == childId);
-        }
+		public IEnumerable<Purchase> GetPurchases(string childId)
+		{
+			return _purchaseRepo.Get(x => x.ChildId == childId);
+		}
 
-        public OperationResult SelectItem(string childId, string itemId)
-        {
-            var isItemId = Guid.TryParse(itemId, out var id);
+		public IEnumerable<OutfitDTO> GetItems(string childId)
+		{
+			return _purchaseRepo.Data.Where(x => x.ChildId == childId).GroupJoin(_storeRepo.Data, x => x.ItemId, y => y.Id, (x, y) => new
+			{
+				x,
+				y,
+			}).SelectMany(x => x.y.DefaultIfEmpty(),
+			(x, y) => new OutfitDTO()
+			{
+				Name = y != null ? y.Name : "Default",
+				ImageUrl = y != null ? y.Picture : "/store-items/item0.png",
+				Points = x.x.Points,
+				IsSelected = x.x.IsSelected,
+				PurchaseId = x.x.Id
+			});
+		}
 
-            if (isItemId)
-            {
-                var item = _purchaseRepo.Get(x => x.ChildId == childId &&
-                                                  x.ItemId == id).FirstOrDefault();
+		public OperationResult SelectItem(string childId, string purchaseId)
+		{
+			var isItemId = Guid.TryParse(purchaseId, out var id);
 
-                if (item != null)
-                {
-                    var chosenItem = _purchaseRepo.Get(x => x.ChildId == childId &&
-                                                            x.IsSelected == true).FirstOrDefault();
+			if (isItemId)
+			{
+				var item = _purchaseRepo.Get(x => x.ChildId == childId &&
+												  x.Id == id).FirstOrDefault();
 
-                    item.IsSelected = true;
+				if (item != null)
+				{
+					var chosenItem = _purchaseRepo.Get(x => x.ChildId == childId &&
+															x.IsSelected).FirstOrDefault();
 
-                    _purchaseRepo.Update(item);
+					item.IsSelected = true;
 
-                    if (chosenItem != null)
-                    {
-                        chosenItem.IsSelected = false;
+					_purchaseRepo.Update(item);
 
-                        _purchaseRepo.Update(chosenItem);
-                    }
+					if (chosenItem != null)
+					{
+						chosenItem.IsSelected = false;
 
-                    return new OperationResult()
-                    {
-                        Success = true,
-                        Messages = new[] { "Selected item was successfully changed." }
-                    };
-                }
-            }
+						_purchaseRepo.Update(chosenItem);
+					}
 
-            return new OperationResult()
-            {
-                Messages = new[] { "Item ID is invalid." }
-            };
-        }
+					return new OperationResult()
+					{
+						Success = true,
+						Messages = new[] { "Selected item was successfully changed." }
+					};
+				}
+			}
 
-        public OperationResult<Purchase> BuyItem(string childId, string itemId)
-        {
-            if (_storeSrv.IsStoreItemExists(itemId, out var item))
-            {
-                var earnedPoints = GetChildsEarnedPoints(childId);
-                var spentPoints = GetChildsSpentPoints(childId);
+			return new OperationResult()
+			{
+				Messages = new[] { "Item ID is invalid." }
+			};
+		}
 
-                var availablePoints = earnedPoints - spentPoints;
+		public OperationResult<Purchase> BuyItem(string childId, string itemId)
+		{
+			if (_storeSrv.IsStoreItemExists(itemId, out var item))
+			{
+				var earnedPoints = GetChildsEarnedPoints(childId);
+				var spentPoints = GetChildsSpentPoints(childId);
 
-                if (availablePoints > item.Points)
-                {
-                    return new OperationResult<Purchase>()
-                    {
-                        Success = true,
-                        Messages = new[] { "Item is yours." },
-                        Data = new[]{ _purchaseRepo.Add(new Purchase()
-                        {
-                            ChildId = childId,
-                            ItemId = item.Id,
-                            Points = item.Points,
-                        })}
-                    };
-                }
+				var availablePoints = earnedPoints - spentPoints;
 
-                return new OperationResult<Purchase>()
-                {
-                    Messages = new[] { "You don`t have enough points." }
-                };
-            }
+				if (availablePoints > item.Points)
+				{
+					return new OperationResult<Purchase>()
+					{
+						Success = true,
+						Messages = new[] { "Item is yours." },
+						Data = new[]{ _purchaseRepo.Add(new Purchase()
+						{
+							ChildId = childId,
+							ItemId = item.Id,
+							Points = item.Points,
+						})}
+					};
+				}
 
-            return new OperationResult<Purchase>()
-            {
-                Messages = new[] { "Item doesn`t exist." }
-            };
-        }
+				return new OperationResult<Purchase>()
+				{
+					Messages = new[] { "You don`t have enough points." }
+				};
+			}
 
-        private int GetChildsEarnedPoints(string childId)
-        {
-            var result = _tasksRepo.Data.Where(x => x.IsFinished == true &&
-                                                    x.ChildId == childId)
-                .Select(x => new
-                {
-                    Points = (x.EndDate - x.StartDate).Minutes * StoreSettings.PointsMultiplier
-                })
-                .Sum(x => x.Points);
+			return new OperationResult<Purchase>()
+			{
+				Messages = new[] { "Item doesn`t exist." }
+			};
+		}
 
-            return (int)result;
-        }
+		private int GetChildsEarnedPoints(string childId)
+		{
+			var result = _tasksRepo.Data.Where(x => x.IsFinished && x.ChildId == childId)
+				.Select(x => new
+				{
+					Points = (x.EndDate - x.StartDate).TotalMinutes * StoreSettings.PointsMultiplier
+				})
+				.Sum(x => x.Points);
 
-        private int GetChildsSpentPoints(string childId)
-        {
-            var result = GetItems(childId).GroupBy(x => x.Points)
-                .Select(g => new
-                {
-                    Points = g.Key * g.Count()
-                })
-                .Sum(x => x.Points);
+			return (int)result;
+		}
 
-            return result;
-        }
+		private int GetChildsSpentPoints(string childId)
+		{
+			var result = GetPurchases(childId).GroupBy(x => x.Points)
+				.Select(g => new
+				{
+					Points = g.Key * g.Count()
+				})
+				.Sum(x => x.Points);
 
-        public OperationResult SetInitialItem(string childId)
-        {
-            _purchaseRepo.Add(new Purchase()
-            {
-                ChildId = childId,
-                ItemId = Guid.Empty,
-                Points = 0,
-                IsSelected = true
-            });
+			return result;
+		}
 
-            return new OperationResult()
-            {
-                Success = true,
-            };
-        }
-    }
+		public OperationResult SetInitialItem(string childId)
+		{
+			_purchaseRepo.Add(new Purchase()
+			{
+				ChildId = childId,
+				ItemId = Guid.Empty,
+				Points = 0,
+				IsSelected = true
+			});
+
+			return new OperationResult()
+			{
+				Success = true,
+			};
+		}
+	}
 }

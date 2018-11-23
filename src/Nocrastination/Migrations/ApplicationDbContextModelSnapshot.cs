@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nocrastination.Data;
 
-namespace Nocrastination.Data.Migrations
+namespace Nocrastination.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181119115045_InitialCreate")]
-    partial class InitialCreate
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,12 +192,36 @@ namespace Nocrastination.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Nocrastination.Core.Entities.ChildTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ChildId");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<bool>("IsFinished");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("ParentId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChildTasks");
+                });
+
             modelBuilder.Entity("Nocrastination.Core.Entities.Purchase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ChildId");
+
+                    b.Property<bool>("IsSelected");
 
                     b.Property<Guid>("ItemId");
 
@@ -223,29 +245,7 @@ namespace Nocrastination.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores");
-                });
-
-            modelBuilder.Entity("Nocrastination.Core.Entities.Tasks", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ChildId");
-
-                    b.Property<DateTime>("EndDate");
-
-                    b.Property<bool>("IsFinished");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("ParentId");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Taskses");
+                    b.ToTable("StoreItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

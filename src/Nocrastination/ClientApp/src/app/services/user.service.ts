@@ -56,6 +56,7 @@ export class UserService {
 	clearUser() {
 		localStorage.removeItem('userId');
 		localStorage.removeItem('isChild');
+		localStorage.removeItem('fullname');
 	}
 
 	canActivate(): boolean {

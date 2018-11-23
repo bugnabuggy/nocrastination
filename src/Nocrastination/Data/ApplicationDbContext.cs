@@ -10,7 +10,7 @@ namespace Nocrastination.Data
 {
     public class ApplicationDbContext: IdentityDbContext<AppUser>
     {
-        public DbSet<Tasks> Taskses { get; set; }
+        public DbSet<ChildTask> ChildTasks { get; set; }
         public DbSet<StoreItem> StoreItems { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         

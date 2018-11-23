@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Nocrastination.Core.Entities;
 using Nocrastination.Interfaces;
 using Nocrastination.Helpers;
 
@@ -41,13 +42,13 @@ namespace Nocrastination.Controllers
 
         [HttpPost]
         [Route("buy")]
-        public async Task<IActionResult> BuyItemAsync([FromBody]string itemId)
+        public async Task<IActionResult> BuyItemAsync([FromBody]StoreItem item)
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
             if (user != null && user.IsChild)
             {
-                var result = _purchaseSrv.BuyItem(user.Id, itemId);
+                var result = _purchaseSrv.BuyItem(user.Id, item.Id.ToString());
 
                 if (result.Success)
                 {

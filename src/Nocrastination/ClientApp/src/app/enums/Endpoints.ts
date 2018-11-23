@@ -25,7 +25,10 @@ class Endpoints {
 		get childStatus() { return Endpoints.baseApiUrl + 'item/status'; },
 
 		store : {
-			get items() {return Endpoints.baseApiUrl + 'store';  }
+			get items() {return Endpoints.baseApiUrl + 'store';  },
+			get buy() { return Endpoints.baseApiUrl + 'store/buy'; },
+			get outfits() {return Endpoints.baseApiUrl + 'item'; },
+			get select() {return Endpoints.baseApiUrl + 'item'; }
 		}
 
 	};

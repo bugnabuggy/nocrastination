@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nocrastination.Data;
 
-namespace Nocrastination.Data.Migrations
+namespace Nocrastination.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181122133930_PurchaseGetIsSelectedField")]
-    partial class PurchaseGetIsSelectedField
+    [Migration("20181123104040_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -194,6 +194,28 @@ namespace Nocrastination.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Nocrastination.Core.Entities.ChildTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ChildId");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<bool>("IsFinished");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("ParentId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChildTasks");
+                });
+
             modelBuilder.Entity("Nocrastination.Core.Entities.Purchase", b =>
                 {
                     b.Property<Guid>("Id")
@@ -225,29 +247,7 @@ namespace Nocrastination.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores");
-                });
-
-            modelBuilder.Entity("Nocrastination.Core.Entities.Tasks", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ChildId");
-
-                    b.Property<DateTime>("EndDate");
-
-                    b.Property<bool>("IsFinished");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("ParentId");
-
-                    b.Property<DateTime>("StartDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Taskses");
+                    b.ToTable("StoreItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
