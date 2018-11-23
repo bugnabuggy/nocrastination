@@ -125,3 +125,24 @@ body{
 .left-column {
     min-width: 300px;
 }
+
+
+.spinner{
+    background: black;
+    position:fixed;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    height: 100%; 
+    left: 0; 
+    opacity: 0.50; 
+    top: 0; 
+    width: 100%; 
+    z-index: 100; 
+  }

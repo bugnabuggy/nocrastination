@@ -27,6 +27,14 @@ export class UserService {
 		if (name) { this.name = name; }
 	}
 
+	incRequest(){
+		this.requestsInProgress++;
+	}
+
+	decRequest(){
+		this.requestsInProgress--;
+	}
+
 	setUser(user: any) {
 		this.userId = user.id;
 		this.isChild = user.isChild;

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseApiUrl: 'http://localhost:53200/'
+  apiServerUrl: 'http://nc.ruteco.com/'
 };

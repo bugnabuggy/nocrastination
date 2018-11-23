@@ -2,7 +2,7 @@ import { environment } from '../../environments/environment';
 
 class Endpoints {
 
-	static baseApiUrl = environment.baseApiUrl + 'api/';
+	static baseApiUrl = environment.apiServerUrl + 'api/';
 
 
 	static forntend = {
@@ -10,8 +10,8 @@ class Endpoints {
 
 	static api = {
 		authorization: {
-			login: environment.baseApiUrl + 'connect/token',
-			logout: environment.baseApiUrl + 'connect/revocation'
+			login: environment.apiServerUrl + 'connect/token',
+			logout: environment.apiServerUrl + 'connect/revocation'
 		},
 		registration: {
 			get registerParent() { return Endpoints.baseApiUrl + 'account/register'; },

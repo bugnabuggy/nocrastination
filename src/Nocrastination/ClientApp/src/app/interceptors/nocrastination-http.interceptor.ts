@@ -13,12 +13,11 @@ import {
 	UserService
 } from '../services';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, share } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class NocrastinationHttpInterceptor implements HttpInterceptor {
-	updateInProgress: boolean = false;
 	waitingRequests: HttpRequest<any>[] = [];
 
 	constructor(public securitySvc: SecurityService,
@@ -27,7 +26,9 @@ export class NocrastinationHttpInterceptor implements HttpInterceptor {
 	) { }
 
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		this.userSvc.requestsInProgress++;
+		// somethin is wrong if i do that ↓
+		this.userSvc.incRequest();
+
 		if (this.securitySvc.token) {
 			request = request.clone({
 				setHeaders: {
@@ -35,21 +36,24 @@ export class NocrastinationHttpInterceptor implements HttpInterceptor {
 				}
 			});
 		}
-		return next.handle(request).pipe(tap((event: HttpEvent<any>) => {
-			if (event instanceof HttpResponse) {
-				this.userSvc.requestsInProgress--;
-				// do stuff with response if you want
-			}
-		}), (err: any) => {
-			this.userSvc.requestsInProgress--;
-			if (err instanceof HttpErrorResponse) {
-				if (err.status === 401) {
-					this.securitySvc.clearTokens();
-					this.router.navigate(['authorization']);
+
+		return next.handle(request).pipe(
+			share(),
+			tap((event: HttpEvent<any>) => {
+				if (event instanceof HttpResponse) {
+					this.userSvc.decRequest();
+					// do stuff with response if you want
 				}
-			}
-			return err;
-		});
+			}, (err: any) => {
+				this.userSvc.decRequest();
+				if (err instanceof HttpErrorResponse) {
+					if (err.status === 401) {
+						this.securitySvc.clearTokens();
+						this.router.navigate(['authorization']);
+					}
+				}
+				return err;
+			}));
 
 	}
 }

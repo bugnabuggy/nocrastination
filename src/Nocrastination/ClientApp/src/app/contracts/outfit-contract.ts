@@ -1,7 +1,7 @@
 export interface OutfitContract {
 	purchaseId?: string;
-	ImageUrl?: string;
-	Name?: string;
+	imageUrl?: string;
+	name?: string;
 	points?: number;
 	isSelected?: boolean;
 }
