@@ -237,6 +237,8 @@ namespace Nocrastination.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Gender");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Picture");

@@ -12,6 +12,8 @@ import { ChildStatusContract } from '../../contracts/child-status-contract';
 export class ChildDashboardComponent implements OnInit {
 	latestTask: TaskContract = {name: ''};
 	name: string = '';
+	avatar: string = '';
+
 	status: ChildStatusContract = {score: 0, itemImageUrl: '', itemName: ''};
 
 	constructor(
@@ -21,6 +23,7 @@ export class ChildDashboardComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+
 		this.schedulerSvc.getLates()
 		.subscribe((val: TaskContract) => {
 			this.latestTask = val;
@@ -29,6 +32,9 @@ export class ChildDashboardComponent implements OnInit {
 		this.userSvc.getStatus()
 			.subscribe( val => {
 				this.status = val;
+				this.avatar = this.userSvc.gender === 'F'
+				? '/assets/avaF.png'
+				: '/assets/ava.png';
 			});
 	}
 
@@ -37,3 +43,4 @@ export class ChildDashboardComponent implements OnInit {
 		this.router.navigate(['/']);
 	}
 }
+ 

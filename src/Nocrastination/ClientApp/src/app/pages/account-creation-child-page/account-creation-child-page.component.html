@@ -1,9 +1,9 @@
 <div class="background-image d-flex justify-content-center align-items-center flex-column ">
     <form #childForm="ngForm" (ngSubmit)="createAccount(childForm)"
     class="d-flex justify-content-center align-items-center flex-column">
-        <h1 class="font-weight-normal comic-font text-light">Create Your Child's Account!</h1>
-        <div class="row">
-            <div class="col col-lg-6">
+        <h1 class="font-weight-normal comic-font text-light px-2">Create Your Child's Account!</h1>
+        <div class="row px-2">
+            <div class="col-12 col-lg-6">
                 <div class="form-group">
                     <input required type="text" 
                         [(ngModel)]="child.fullName" 
@@ -40,7 +40,7 @@
                 </div>
 
             </div>
-            <div class="col col-lg-6 margin-top">
+            <div class="col-12 col-lg-6 margin-top">
                 <div class="form-group">
                     <input required type="number"
                         min="0" 

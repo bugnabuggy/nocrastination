@@ -35,10 +35,10 @@ namespace Nocrastination.Services
 			_cfg = cfg;
 		}
 
-		public UserStatusDTO GetStatus(string childId)
+		public UserStatusDTO GetStatus(AppUser child)
 		{
-			var selectedItem = GetPurchases(childId).FirstOrDefault(x => x.IsSelected);
-			var score = GetChildsEarnedPoints(childId) - GetChildsSpentPoints(childId);
+			var selectedItem = GetPurchases(child.Id).FirstOrDefault(x => x.IsSelected);
+		    var score = GetChildsEarnedPoints(child.Id) - GetChildsSpentPoints(child.Id);
 			var item = _storeSrv.GetAllItemsInStore().FirstOrDefault(x => x.Id == selectedItem.ItemId);
 
 			if (item == null)
@@ -46,8 +46,8 @@ namespace Nocrastination.Services
 				item = new StoreItem()
 				{
 					Name = "default",
-					Picture = "/store-items/item0.png"
-				};
+					Picture = child.Sex.Equals("F") ? "/store-items/DefaultF.png" : "/store-items/DefaultM.png"
+                };
 			}
 
 			return new UserStatusDTO()
@@ -64,9 +64,9 @@ namespace Nocrastination.Services
 			return _purchaseRepo.Get(x => x.ChildId == childId);
 		}
 
-		public IEnumerable<OutfitDTO> GetItems(string childId)
+		public IEnumerable<OutfitDTO> GetItems(AppUser child)
 		{
-			return _purchaseRepo.Data.Where(x => x.ChildId == childId).GroupJoin(_storeRepo.Data, x => x.ItemId, y => y.Id, (x, y) => new
+			return _purchaseRepo.Data.Where(x => x.ChildId == child.Id).GroupJoin(_storeRepo.Data, x => x.ItemId, y => y.Id, (x, y) => new
 			{
 				x,
 				y,
@@ -74,7 +74,7 @@ namespace Nocrastination.Services
 			(x, y) => new OutfitDTO()
 			{
 				Name = y != null ? y.Name : "Default",
-				ImageUrl = y != null ? y.Picture : "/store-items/item0.png",
+				ImageUrl = y != null ? y.Picture : $"/store-items/Default{child.Sex}.png",
 				Points = x.x.Points,
 				IsSelected = x.x.IsSelected,
 				PurchaseId = x.x.Id

@@ -12,6 +12,8 @@ export class UserService {
 	pageTitle: string;
 	userId: string;
 	isChild: boolean;
+	gender: string;
+	currentImg: string;
 	name: string;
 
 	constructor(
@@ -25,13 +27,16 @@ export class UserService {
 
 		const name = JSON.parse(localStorage.getItem('fullname'));
 		if (name) { this.name = name; }
+
+		const gender = JSON.parse(localStorage.getItem('gender'));
+		if (gender) { this.gender = gender; }
 	}
 
-	incRequest(){
+	incRequest() {
 		this.requestsInProgress++;
 	}
 
-	decRequest(){
+	decRequest() {
 		this.requestsInProgress--;
 	}
 
@@ -39,8 +44,10 @@ export class UserService {
 		this.userId = user.id;
 		this.isChild = user.isChild;
 		this.name = user.fullName;
+		this.gender = user.sex;
 		localStorage.setItem('userId', JSON.stringify(user.id));
 		localStorage.setItem('isChild', JSON.stringify(user.isChild));
+		localStorage.setItem('gender', JSON.stringify(user.sex));
 		localStorage.setItem('fullname', JSON.stringify(user.fullName || ''));
 	}
 
@@ -65,6 +72,7 @@ export class UserService {
 		localStorage.removeItem('userId');
 		localStorage.removeItem('isChild');
 		localStorage.removeItem('fullname');
+		localStorage.removeItem('gender');
 	}
 
 	canActivate(): boolean {
@@ -86,6 +94,12 @@ export class UserService {
 	}
 
 	getStatus(): Observable<ChildStatusContract> {
-		return this.http.get<ChildStatusContract>(Endpoints.api.childStatus);
+		const observable =  this.http.get<ChildStatusContract>(Endpoints.api.childStatus).pipe(share());
+
+		observable.subscribe(val => {
+			this.currentImg  = val.itemImageUrl;
+		});
+
+		return observable;
 	}
 }

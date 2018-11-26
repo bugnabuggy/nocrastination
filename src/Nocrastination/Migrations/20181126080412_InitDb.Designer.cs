@@ -10,8 +10,8 @@ using Nocrastination.Data;
 namespace Nocrastination.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181123104040_Init")]
-    partial class Init
+    [Migration("20181126080412_InitDb")]
+    partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -238,6 +238,8 @@ namespace Nocrastination.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Gender");
 
                     b.Property<string>("Name");
 

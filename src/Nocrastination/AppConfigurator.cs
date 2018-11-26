@@ -44,7 +44,9 @@ namespace Nocrastination
                     {
                         Name = item.Name,
                         Picture = item.Picture,
-                        Points = item.Points
+                        Points = item.Points,
+                        Gender = item.Gender
+
                     });
                     ctx.SaveChanges();
                 }

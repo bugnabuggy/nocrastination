@@ -11,7 +11,9 @@
 		</div>
 
 		<div class='col-12 col-md-3 d-flex justify-content-center align-items-center flex-column'>
-			<img src="/assets/child.png" alt="Child img">
+			<img 
+				class='tile-img'
+				[src]="userSvc.currentImg" alt="Child img">
 			<button (click)="goToDashboard()" class='btn float-right mt-4'>
 				Return home
 			</button>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Nocrastination.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -92,7 +92,8 @@ namespace Nocrastination.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Picture = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    Points = table.Column<int>(nullable: false)
+                    Points = table.Column<int>(nullable: false),
+                    Gender = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

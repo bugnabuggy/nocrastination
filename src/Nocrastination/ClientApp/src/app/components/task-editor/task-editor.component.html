@@ -3,12 +3,12 @@
       <input 
         placeholder="Task"
         [(ngModel)]="task.name"
-        class="form-control" 
+        class="form-control mt-1" 
         type="text"
         (change)="onSave()"> 
   </div>
   <div class="col-sm-3">
-      <input class="form-control" 
+      <input class="form-control mt-1" 
           [(ngModel)]="task.startDate"
           type="datetime" 
           [owlDateTime]="dtFrom" 
@@ -21,7 +21,7 @@
       </owl-date-time>
   </div>
   <div class="col-sm-3">
-      <input class="form-control" 
+      <input class="form-control mt-1" 
           [(ngModel)]="task.endDate"
           type="datetime" 
           [owlDateTime]="dtTo" 
@@ -34,6 +34,6 @@
       </owl-date-time>
   </div>
     <div class="col-1">
-      <button class='btn' title="delete" (click)='onDelete()'>X</button>
+      <button class='btn mt-2' title="delete" (click)='onDelete()'>X</button>
     </div>
 </li>

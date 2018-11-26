@@ -58,6 +58,8 @@ export class ViewSchedulePageComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		this.userSvc.getStatus().subscribe(val => val);
+
 		this.schedulerSvc.getTasks()
 			.subscribe(val => {
 				this.startHour = this.getStart(val);

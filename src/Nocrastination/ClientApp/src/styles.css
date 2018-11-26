@@ -93,12 +93,16 @@ body{
 }
 
 
-.main-subtitle {
+/* .main-subtitle {
     font-family: "Comic Sans MS", "Comic Sans";
     position: absolute;
     bottom: 20%;
     right:10%;
     max-width: 85%;
+} */
+
+.white-space-normal {
+    white-space: normal !important;
 }
 
 .ng-valid[required], .ng-valid.required  {
@@ -122,10 +126,17 @@ body{
     color: #fff;
 }
  
+.mw-600{
+    min-width: 620px;
+}
+
 .left-column {
     min-width: 300px;
 }
 
+.right-column{
+    min-width: 320px;
+}
 
 .spinner{
     background: black;

@@ -32,7 +32,7 @@ namespace Nocrastination.Controllers
 
             if (user != null && user.IsChild)
             {
-                return Ok(_purchaseSrv.GetStatus(user.Id));
+                return Ok(_purchaseSrv.GetStatus(user));
             }
 
             return StatusCode(403);
@@ -45,7 +45,7 @@ namespace Nocrastination.Controllers
 
             if (user != null && user.IsChild)
             {
-                return Ok(_purchaseSrv.GetItems(user.Id));
+                return Ok(_purchaseSrv.GetItems(user));
             }
 
             return StatusCode(403);

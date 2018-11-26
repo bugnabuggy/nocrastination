@@ -28,9 +28,10 @@ namespace Nocrastination.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetItems()
+        public async Task<IActionResult> GetItems()
         {
-            var result = _storeSrv.GetAllItemsInStore();
+            var user = await _helper.GetUserFromClaims(User.Claims);
+            var result = _storeSrv.GetAllItemsInStore().Where(x=>x.Gender.Equals(user.Sex, StringComparison.CurrentCultureIgnoreCase));
 
             if (result != null)
             {

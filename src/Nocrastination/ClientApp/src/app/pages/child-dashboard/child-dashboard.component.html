@@ -1,4 +1,4 @@
-<div class='full-height main-background d-flex flex-row'>
+<div class='full-height w-100 main-background d-flex flex-row mw-600'>
         <div class="bg-warning d-flex flex-column left-column col-3 col-sm-4 justify-content-around align-items-center">
             <div class='h2 text-center'>
                 <div class="comic-font"> My Score</div>
@@ -6,7 +6,9 @@
             </div>
     
             <div class='w-100'>
-                <img class='img-fluid w-100' src="/assets/ava.png" alt="Child avatar">
+                <img class='img-fluid w-100' 
+                    [src]="avatar"
+                    alt="Child avatar">
             </div>
             <div class='h2 comic-font text-center'>
                 <div class='h2 text-center'>{{userSvc.name}}</div>
@@ -19,7 +21,7 @@
             </div>
         </div>
     
-        <div class='d-flex flex-1 flex-column'>
+        <div class='d-flex flex-1 flex-column right-column'>
                 <div class='empty-space align-items-center d-flex justify-content-center'>
                     <button class='btn ml-auto mr-4' [routerLink]="['/store']"> Store</button>
                 </div>

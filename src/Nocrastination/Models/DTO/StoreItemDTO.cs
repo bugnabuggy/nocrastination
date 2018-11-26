@@ -10,5 +10,6 @@ namespace Nocrastination.Models.DTO
         public string Picture { get; set; }
         public string Name { get; set; }
         public int Points { get; set; }
+        public string Gender { get; set; }
     }
 }
