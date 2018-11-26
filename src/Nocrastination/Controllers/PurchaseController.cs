@@ -30,9 +30,9 @@ namespace Nocrastination.Controllers
         {
             var user = await _helper.GetUserFromClaims(User.Claims);
 
-            if (user != null && user.IsChild)
+            if (user != null )
             {
-                return Ok(_purchaseSrv.GetStatus(user));
+                 return Ok(_purchaseSrv.GetStatus(user));
             }
 
             return StatusCode(403);

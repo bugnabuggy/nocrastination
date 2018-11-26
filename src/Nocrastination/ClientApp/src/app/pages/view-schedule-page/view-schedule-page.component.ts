@@ -53,12 +53,11 @@ export class ViewSchedulePageComponent implements OnInit {
 
 	constructor(
 		private schedulerSvc: SchedulerService,
-		private userSvc: UserService,
+		public userSvc: UserService,
 		private router: Router
 	) { }
 
-	ngOnInit() {
-		this.userSvc.getStatus().subscribe(val => val);
+	ngOnInit() {this.userSvc.getStatus().subscribe(val => val);
 
 		this.schedulerSvc.getTasks()
 			.subscribe(val => {

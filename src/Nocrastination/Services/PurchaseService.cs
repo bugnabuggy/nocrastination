@@ -18,14 +18,16 @@ namespace Nocrastination.Services
 		private IRepository<Purchase> _purchaseRepo;
 		private IRepository<StoreItem> _storeRepo;
 		private IRepository<ChildTask> _tasksRepo;
-		private IStoreService _storeSrv;
+	    private IRepository<AppUser> _usersRepo;
+        private IStoreService _storeSrv;
 		private IConfiguration _cfg;
 
 		public PurchaseService
 			(IRepository<Purchase> purchaseRepo,
 			IRepository<ChildTask> tasksRepo,
 			IStoreService storeSrv,
-			IRepository<StoreItem> storeRepo,
+		    IRepository<AppUser> usersRepo,
+            IRepository<StoreItem> storeRepo,
 			IConfiguration cfg)
 		{
 			_purchaseRepo = purchaseRepo;
@@ -33,10 +35,20 @@ namespace Nocrastination.Services
 			_storeRepo = storeRepo;
 			_storeSrv = storeSrv;
 			_cfg = cfg;
+		    _usersRepo = usersRepo;
+
 		}
 
 		public UserStatusDTO GetStatus(AppUser child)
 		{
+		    if (!child.IsChild)
+		    {
+		        var parentId = child.Id;
+		        var user = _usersRepo.Get(x => x.ParentId == parentId)
+		            .FirstOrDefault();
+		        child = user ?? child;
+		    }
+
 			var selectedItem = GetPurchases(child.Id).FirstOrDefault(x => x.IsSelected);
 		    var score = GetChildsEarnedPoints(child.Id) - GetChildsSpentPoints(child.Id);
 			var item = _storeSrv.GetAllItemsInStore().FirstOrDefault(x => x.Id == selectedItem.ItemId);
