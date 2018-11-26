@@ -1,9 +1,9 @@
-<div class='d-flex flex-column justify-content-center align-items-center mw-300'>
-  <div>
-      <img [src]="item.picture" alt="item.name">
+<div class='h-100 d-flex flex-column justify-content-center align-items-center mw-300'>
+  <div class='mb-auto'>
+      <img  class='img-fluid' [src]="item.picture" alt="item.name">
   </div>
   <div class='text-center'>
-    <h3 class='h3 comic-font'>{{item.name}}</h3>
+    <h3 class='h4 comic-font '>{{item.name}}</h3>
     <div class='h3 comic-font text-danger'>{{item.points + ' Points'}}</div>
     <button
       class='btn'

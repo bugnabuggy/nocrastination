@@ -1,5 +1,5 @@
-<div class='full-height main-background d-flex flex-row'>
-  <div class='d-flex flex-column col-3 justify-content-between align-items-center'>
+<div class='full-height main-background row'>
+  <div class='d-flex flex-column left-column col-12 col-sm-3 justify-content-between align-items-center'>
     <div></div>
     <div>
       <label class='h3 comic-font'>My Score</label>
@@ -10,11 +10,10 @@
     </div>
   </div>
 
-  <ul class='row flex-1 no-list m-0'>
+  <ul class='row col-12 col-sm-9 flex-1 no-list m-0'>
     <li *ngFor="let item of items" class='col-6 d-flex justify-content-center align-items-center'>
-      <app-store-item  [item]="item" (buy)="buy($event)">
+      <app-store-item class="h-100" [item]="item" (buy)="buy($event)">
       </app-store-item>
     </li>
   </ul>
-
 </div>
