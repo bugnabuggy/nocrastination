@@ -3,6 +3,7 @@ import { SecurityService, UserService, SchedulerService } from '../../services';
 import { Router } from '@angular/router';
 import { TaskContract } from '../../contracts/task-contract';
 import { ChildStatusContract } from '../../contracts/child-status-contract';
+import { Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-child-dashboard',
@@ -19,10 +20,12 @@ export class ChildDashboardComponent implements OnInit {
 	constructor(
 		public userSvc: UserService,
 		private router: Router,
-		private schedulerSvc: SchedulerService
+		private schedulerSvc: SchedulerService,
+		private titleService: Title
 	) { }
 
 	ngOnInit() {
+		this.titleService.setTitle('Nocrastination - Child page');
 
 		this.schedulerSvc.getLates()
 		.subscribe((val: TaskContract) => {

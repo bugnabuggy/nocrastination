@@ -54,10 +54,11 @@ namespace Nocrastination.Services
             var data = GetTasksData(user.Id, user.IsChild).OrderBy(x => x.EndDate);
 
             var task = data.FirstOrDefault(x => x.StartDate <= now &&
-                                                x.EndDate >= now);
+                                                x.EndDate >= now && 
+                                                !x.IsFinished);
             if (task == null)
             {
-                task = data.FirstOrDefault(x => x.EndDate >= now);
+                task = data.FirstOrDefault(x => x.EndDate >= now && !x.IsFinished);
             }
 
 	        List<TaskDTO> tasks = new List<TaskDTO>();
