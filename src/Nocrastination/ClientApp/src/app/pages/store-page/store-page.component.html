@@ -9,10 +9,9 @@
       <button  [routerLink]="['/child-dashboard']" class='btn'>Return home</button>
     </div>
   </div>
-
-  <ul class='row col-12 col-sm-9 flex-1 no-list m-0'>
-    <li *ngFor="let item of items" class='col-6 d-flex justify-content-center align-items-center'>
-      <app-store-item class="h-100" [item]="item" (buy)="buy($event)">
+  <ul class='row col-12 col-sm-9   flex-1 no-list m-0'>
+    <li *ngFor="let item of items" class='col-12 col-sm-6 col-md-6 col-xl-4 d-flex justify-content-center align-items-center'>
+      <app-store-item [item]="item" (buy)="buy($event)">
       </app-store-item>
     </li>
   </ul>
