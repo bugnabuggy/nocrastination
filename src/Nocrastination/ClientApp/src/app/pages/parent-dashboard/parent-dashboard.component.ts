@@ -11,7 +11,7 @@ import { Title } from '@angular/platform-browser';
 export class ParentDashboardComponent implements OnInit {
 
 	constructor(
-		private userSvc: UserService,
+		public userSvc: UserService,
 		private router: Router,
 		private titleService: Title
 	) { }
